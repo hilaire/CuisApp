@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #6054] on 25 October 2023 at 6:58:44 pm'!
+'From Cuis 6.0 [latest update: #6054] on 25 October 2023 at 7:22:28 pm'!
 'Description '!
-!provides: 'CuisApp' 1 18!
+!provides: 'CuisApp' 1 21!
 !requires: 'Goodies' 1 10 nil!
 !requires: 'UI-Components' nil nil nil!
 !requires: 'Gettext' nil nil nil!
@@ -279,12 +279,13 @@ flipHorizontally
 flipVertically
 	cmdManager flipVertically ! !
 
-!App methodsFor: 'callback' stamp: 'hlsf 10/25/2023 16:36:26'!
+!App methodsFor: 'callback' stamp: 'hlsf 10/25/2023 19:20:00'!
 openImage
 	| answer |
 	answer := (StandardFileMenu new
 		oldFileFrom: AppSystem picturesPath withPattern: '*.png *.jpg *.jpeg' excludePattern: '.*') startUpWithCaption: 'Pick up a picture' translated.
-	answer ifNotNil: [	domain fileEntry: answer directory // answer name	].! !
+	answer ifNotNil: [	domain fileEntry: answer directory // answer name	].
+	cmdManager release ! !
 
 !App methodsFor: 'callback' stamp: 'hlsf 10/25/2023 18:41:11'!
 redo
@@ -368,13 +369,35 @@ unexecute
 degrees: angle
 	degrees := angle ! !
 
-!AppRotateCommand methodsFor: 'accessing' stamp: 'hlsf 10/25/2023 18:28:27'!
+!AppRotateCommand methodsFor: 'accessing' stamp: 'hlsf 10/25/2023 19:13:53'!
 execute
-	self imageMorph image: (self imageMorph form rotatedByDegrees: degrees)! !
+	self imageMorph image: (self rotatedBy: degrees)! !
 
-!AppRotateCommand methodsFor: 'accessing' stamp: 'hlsf 10/25/2023 17:01:48'!
+!AppRotateCommand methodsFor: 'accessing' stamp: 'hlsf 10/25/2023 19:14:05'!
 unexecute
-	self imageMorph image: (self imageMorph form rotatedByDegrees: degrees negated)! !
+	self imageMorph image: (self rotatedBy: degrees negated)! !
+
+!AppRotateCommand methodsFor: 'transformation' stamp: 'hlsf 10/25/2023 19:13:35'!
+rotatedBy:  angle
+	| originalForm rot warp r1 pts p center |
+	originalForm := self imageMorph form.
+	rot := Form extent: originalForm height @ originalForm width depth: originalForm depth.
+	center := rot extent // 2.
+
+	"Now compute the sin and cos constants for the rotation angle." 
+	warp := (WarpBlt toForm: rot)
+		sourceForm: originalForm ;
+		colorMap: (originalForm colormapIfNeededFor: rot);
+		cellSize: 1;  
+		combinationRule: Form over.
+	r1 := rot boundingBox aligned: center with: originalForm boundingBox center.
+
+	pts := r1 innerCorners collect: [ :pt |
+		p := pt - r1 center.
+		(r1 center x asFloat + (p x asFloat*angle degreeCos) + (p y asFloat*angle degreeSin)) @
+		(r1 center y asFloat - (p x asFloat*angle degreeSin) + (p y asFloat*angle degreeCos))].
+	warp copyQuad: pts toRect: rot boundingBox.
+	^ rot! !
 
 !AppZoomInCommand methodsFor: 'command' stamp: 'hlsf 10/25/2023 18:36:32'!
 execute
@@ -397,9 +420,10 @@ unexecute
 release
 	cacheForm := nil! !
 
-!AppCommandManager methodsFor: 'dependents access' stamp: 'hlsf 4/24/2020 12:56:20'!
+!AppCommandManager methodsFor: 'dependents access' stamp: 'hlsf 10/25/2023 19:21:56'!
 release
-	stack contents do: [:c | c release].! !
+	stack 	contents do: [:c | c release].
+	stack 	resetToStart ! !
 
 !AppCommandManager methodsFor: 'initialization' stamp: 'hlsf 10/25/2023 12:18:51'!
 initialize
@@ -423,18 +447,18 @@ redo
 	command _ stack next.
 	command ifNotNil:	[command execute]! !
 
-!AppCommandManager methodsFor: 'command exec' stamp: 'hlsf 10/25/2023 18:40:56'!
+!AppCommandManager methodsFor: 'command exec' stamp: 'hlsf 10/25/2023 19:03:04'!
 rotateLeft
 	|command|
 	command := stack nextPut: (AppRotateCommand presenter: presenter).
-	command degrees: 90.
+	command degrees: -90.
 	^command execute! !
 
-!AppCommandManager methodsFor: 'command exec' stamp: 'hlsf 10/25/2023 17:04:12'!
+!AppCommandManager methodsFor: 'command exec' stamp: 'hlsf 10/25/2023 19:03:08'!
 rotateRight
 	|command|
 	command := stack nextPut: (AppRotateCommand presenter: presenter).
-	command degrees: -90.
+	command degrees: 90.
 	^command execute! !
 
 !AppCommandManager methodsFor: 'command exec'!
