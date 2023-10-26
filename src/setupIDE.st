@@ -4,7 +4,7 @@ Transcript
    showOnDisplay: false;
    logToFile: true;
    logToStdout: true.
-"Smalltalk at: #LogStartupDebugAids put: true."
+Smalltalk at: #LogStartupDebugAids put: true.
 "Install change set"
 ChangeSet installNewUpdates.
 "System configurations"
@@ -14,7 +14,7 @@ Preferences at: #autoNumberUserChanges put: false.
 "Install CuisApp code"
 Feature require: 'CuisApp'.
 "Delete all windows but the taskbar"
-self runningWorld doOneMinimalCycleNow.
+self runningWorld doOneCycleNow.
 list := UISupervisor ui submorphs reject: [:aMorph | aMorph is: #TaskbarMorph].
  list do: [:each | each delete].
 "Adjust font size"
@@ -23,7 +23,7 @@ Preferences at: #defaultFontSize put: 10.
 morph := UISupervisor ui taskbar.
 morph scale: 1/2.
 Display fullScreenMode: true.
-self runningWorld doOneMinimalCycleNow.
+self runningWorld doOneCycleNow.
 "Compute the available free space for windows placement"
 area _ RealEstateAgent maximumUsableArea extendBy: 0 @ morph morphHeight negated.
 extent _ area extent // 2.
@@ -38,14 +38,17 @@ BrowserWindow openBrowser
 morph _ BrowserWindow openBrowser 
 	morphPosition: area extent // 2;
 	morphExtent: extent.
-morph model setClass: (Smalltalk at: #CuisApp) selector: nil.
+morph model setClass: (Smalltalk at: #App) selector: nil.
 "Open a Workspace with some default contents"
 morph _ Workspace openWorkspace.
 morph model actualContents: 'ChangeSet installNewUpdates.
-DySystem beDevelopment.
-DySystem beApplication.
-Dynabook new.
-(BreadcrumbsPane on: DyUserData current with: DyViewerVisitor ) openInWorld.'.
+AppSystem beDevelopment.
+App new.
+NaturalLanguageTranslator privateStartUp .
+TextDomainManager registerCategoryPrefix: ''CuisApp'' domain: ''cuisapp''.
+TextDomainManager allKnownDomains.
+GetTextExporter exportTemplate'.
+
 morph 
 	morphPosition: 0 @ (area height // 2);
 	morphExtent: extent x @ (2 / 3 * extent y).

@@ -1,0 +1,93 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Cuis\n"
+"POT-Creation-Date: 2023-10-26 12:41-0000\n"
+"PO-Revision-Date: 2023-10-26 12:41-0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ascii\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Cuis-SystemVersion: Cuis 6.0 update 6058\n"
+"X-Cuis-Domain: cuisapp\n"
+
+#: CuisApp-Model,AppDomain>>labelString
+msgid "Image Viewer -- "
+msgstr ""
+
+#: CuisApp-Presenter,App>>openImage
+msgid "Pick up a picture"
+msgstr ""
+
+#: CuisApp-View,AppControlManager>>flipHorizontallyButtonData
+msgid "Flip H"
+msgstr ""
+
+#: CuisApp-View,AppControlManager>>flipHorizontallyButtonData
+msgid "Flip the picture horizontally."
+msgstr ""
+
+#: CuisApp-View,AppControlManager>>flipVerticallyButtonData
+msgid "Flip V"
+msgstr ""
+
+#: CuisApp-View,AppControlManager>>flipVerticallyButtonData
+msgid "Flip the picture vertically."
+msgstr ""
+
+#: CuisApp-View,AppControlManager>>openButtonData
+msgid "Open"
+msgstr ""
+
+#: CuisApp-View,AppControlManager>>openButtonData
+msgid "Select a picture to visualize and to operate with."
+msgstr ""
+
+#: CuisApp-View,AppControlManager>>redoButtonData
+msgid "Redo"
+msgstr ""
+
+#: CuisApp-View,AppControlManager>>redoButtonData
+msgid "Redo the last undone operation."
+msgstr ""
+
+#: CuisApp-View,AppControlManager>>rotateLeftButtonData
+msgid "Rotate Left"
+msgstr ""
+
+#: CuisApp-View,AppControlManager>>rotateLeftButtonData
+msgid "Rotate the picture of 90 degrees to the left."
+msgstr ""
+
+#: CuisApp-View,AppControlManager>>rotateRightButtonData
+msgid "Rotate Right"
+msgstr ""
+
+#: CuisApp-View,AppControlManager>>rotateRightButtonData
+msgid "Rotate the picture of 90 degrees to the right."
+msgstr ""
+
+#: CuisApp-View,AppControlManager>>undoButtonData
+msgid "Undo"
+msgstr ""
+
+#: CuisApp-View,AppControlManager>>undoButtonData
+msgid "Undo the last operation."
+msgstr ""
+
+#: CuisApp-View,AppControlManager>>zoomInButtonData
+msgid "Zoom In"
+msgstr ""
+
+#: CuisApp-View,AppControlManager>>zoomInButtonData
+msgid "Zoom in the picture."
+msgstr ""
+
+#: CuisApp-View,AppControlManager>>zoomOutButtonData
+msgid "Zoom Out"
+msgstr ""
+
+#: CuisApp-View,AppControlManager>>zoomOutButtonData
+msgid "Zoom out the picture."
+msgstr ""
+

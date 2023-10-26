@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #6054] on 25 October 2023 at 7:22:28 pm'!
+'From Cuis 6.0 [latest update: #6058] on 26 October 2023 at 11:17:48 am'!
 'Description '!
-!provides: 'CuisApp' 1 21!
+!provides: 'CuisApp' 1 22!
 !requires: 'Goodies' 1 10 nil!
 !requires: 'UI-Components' nil nil nil!
 !requires: 'Gettext' nil nil nil!
@@ -34,7 +34,7 @@ AppView class
 
 !classDefinition: #App category: #'CuisApp-Presenter'!
 Object subclass: #App
-	instanceVariableNames: 'domain controlsManager cmdManager'
+	instanceVariableNames: 'domain controlManager cmdManager'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'CuisApp-Presenter'!
@@ -259,11 +259,11 @@ for: aPresenter
 		presenter: aPresenter;
 		initialize ! !
 
-!App methodsFor: 'initialization' stamp: 'hlsf 10/25/2023 17:06:18'!
+!App methodsFor: 'initialization' stamp: 'hlsf 10/26/2023 11:17:42'!
 initialize
 	domain := AppDomain new.
-	controlsManager := AppControlManager for: self.
-	controlsManager installAppView.
+	controlManager := AppControlManager for: self.
+	controlManager installAppView.
 	cmdManager := AppCommandManager new presenter: self.
 	self view openInWorld ! !
 
@@ -315,9 +315,9 @@ zoomOut
 domain
 	^ domain! !
 
-!App methodsFor: 'accessing' stamp: 'hlsf 10/25/2023 14:33:20'!
+!App methodsFor: 'accessing' stamp: 'hlsf 10/26/2023 11:17:42'!
 view
-	^ controlsManager view! !
+	^ controlManager view! !
 
 !App methodsFor: 'testing' stamp: 'hlsf 10/25/2023 15:58:39'!
 isButtonActive

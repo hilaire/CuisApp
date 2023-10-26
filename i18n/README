@@ -1,0 +1,10 @@
+From Cuis image, with Gettext package installed, execute:
+
+     TextDomainManager registerCategoryPrefix: 'CuisApp' domain: 'cuisapp'.
+     GetTextExporter exportTemplate.
+
+At image root directory (on Linux), a po/ folder is created containing
+the cuisapp.pot file with the up to date message.
+
+Beware, carriage return (CR) are \r in the messages, keep it like
+this.
