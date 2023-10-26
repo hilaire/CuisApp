@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #6058] on 26 October 2023 at 11:17:48 am'!
+'From Cuis 6.0 [latest update: #6058] on 26 October 2023 at 1:18:08 pm'!
 'Description '!
-!provides: 'CuisApp' 1 22!
+!provides: 'CuisApp' 1 23!
 !requires: 'Goodies' 1 10 nil!
 !requires: 'UI-Components' nil nil nil!
 !requires: 'Gettext' nil nil nil!
@@ -562,7 +562,7 @@ initialize
 appTools
 	^ #(open spacer undo redo spacer rotateLeft rotateRight flipVertically flipHorizontally zoomIn zoomOut)! !
 
-!AppControlManager methodsFor: 'view' stamp: 'hlsf 10/25/2023 16:41:41'!
+!AppControlManager methodsFor: 'view' stamp: 'hlsf 10/26/2023 11:19:17'!
 installAppView
 	| scroller |
 	view := AppView for: presenter.
@@ -570,13 +570,13 @@ installAppView
 		layoutSpec: LayoutSpec useAll;
 		scroller: view imageMorph.	
 	view 
-		addMorph: self AppToolbar 
+		addMorph: self appToolbar 
 		layoutSpec: (LayoutSpec fixedHeight: AppSystem iconToolbarSize + 4).
 	view addMorph: scroller
 	! !
 
-!AppControlManager methodsFor: 'widget' stamp: 'hlsf 10/25/2023 14:26:17'!
-AppToolbar
+!AppControlManager methodsFor: 'widget' stamp: 'hlsf 10/26/2023 11:19:17'!
+appToolbar
 	| toolbar |
 	toolbar := LayoutMorph newRow 
 		separation: 5; 
