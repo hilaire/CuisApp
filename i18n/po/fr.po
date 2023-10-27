@@ -13,81 +13,81 @@ msgstr ""
 
 #: CuisApp-Model,AppDomain>>labelString
 msgid "Image Viewer -- "
-msgstr ""
+msgstr "Visionneuse d'image"
 
 #: CuisApp-Presenter,App>>openImage
 msgid "Pick up a picture"
-msgstr ""
+msgstr "Choisir une image"
 
 #: CuisApp-View,AppControlManager>>flipHorizontallyButtonData
 msgid "Flip H"
-msgstr ""
+msgstr "Retourner H"
 
 #: CuisApp-View,AppControlManager>>flipHorizontallyButtonData
 msgid "Flip the picture horizontally."
-msgstr ""
+msgstr "Retourner l'image horizontalement"
 
 #: CuisApp-View,AppControlManager>>flipVerticallyButtonData
 msgid "Flip V"
-msgstr ""
+msgstr "Retourner V"
 
 #: CuisApp-View,AppControlManager>>flipVerticallyButtonData
 msgid "Flip the picture vertically."
-msgstr ""
+msgstr "Retourner l'image verticallement"
 
 #: CuisApp-View,AppControlManager>>openButtonData
 msgid "Open"
-msgstr ""
+msgstr "Ouvrir"
 
 #: CuisApp-View,AppControlManager>>openButtonData
 msgid "Select a picture to visualize and to operate with."
-msgstr ""
+msgstr "Choisir une image à visualiser et à opérer avec."
 
 #: CuisApp-View,AppControlManager>>redoButtonData
 msgid "Redo"
-msgstr ""
+msgstr "Refaire"
 
 #: CuisApp-View,AppControlManager>>redoButtonData
 msgid "Redo the last undone operation."
-msgstr ""
+msgstr "Refaire la dernière opération annulée"
 
 #: CuisApp-View,AppControlManager>>rotateLeftButtonData
 msgid "Rotate Left"
-msgstr ""
+msgstr "Pivoter à gauche"
 
 #: CuisApp-View,AppControlManager>>rotateLeftButtonData
 msgid "Rotate the picture of 90 degrees to the left."
-msgstr ""
+msgstr "Pivoter l'image de 90 degrés à gauche."
 
 #: CuisApp-View,AppControlManager>>rotateRightButtonData
 msgid "Rotate Right"
-msgstr ""
+msgstr "Pivoter à droite"
 
 #: CuisApp-View,AppControlManager>>rotateRightButtonData
 msgid "Rotate the picture of 90 degrees to the right."
-msgstr ""
+msgstr "Pivoter l'image de 90 degrés à droite."
 
 #: CuisApp-View,AppControlManager>>undoButtonData
 msgid "Undo"
-msgstr ""
+msgstr "Défaire"
 
 #: CuisApp-View,AppControlManager>>undoButtonData
 msgid "Undo the last operation."
-msgstr ""
+msgstr "Défaire la dernière opération."
 
 #: CuisApp-View,AppControlManager>>zoomInButtonData
 msgid "Zoom In"
-msgstr ""
+msgstr "Grossir"
 
 #: CuisApp-View,AppControlManager>>zoomInButtonData
 msgid "Zoom in the picture."
-msgstr ""
+msgstr "Grossir l'image."
 
 #: CuisApp-View,AppControlManager>>zoomOutButtonData
 msgid "Zoom Out"
-msgstr ""
+msgstr "Dégrossir"
 
 #: CuisApp-View,AppControlManager>>zoomOutButtonData
 msgid "Zoom out the picture."
-msgstr ""
+msgstr "Dégrossir l'image."
 

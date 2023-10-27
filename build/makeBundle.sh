@@ -27,8 +27,8 @@ bundlesPath="$buildPath/bundles"
 src="$cuisAppRepo/src"
 resources="$cuisAppRepo/resources"
  
-vmExec="../VM/squeak"
-installScript="$src/install-cuisapp-workstation.st"
+vmExec="../cogspur/squeak"
+installScript="$src/install-image.st"
 
 
 
@@ -75,14 +75,8 @@ makeBundle () {
     rsync -a $imagePath/app.{image,changes} $bundleResources/image
     # install Smalltalk Source
     rsync -a $imagePath/$smalltalkSources $bundleResources/image
-    # install fonts
-    mkdir $bundleResources/fonts/
-    rsync -a "$resources/fonts/WenQuanYi Zen Hei Sharp Regular.ttf" $bundleResources/fonts/
     # install the locales
     rsync -a "$cuisAppRepo/i18n/locale" $bundleResources/image
-    # install doc
-    mkdir $bundleResources/doc
-    cp $resources/doc/README.*.txt $resources/doc/README.txt $bundleResources/doc
     # set exec flag
     if [[ "$1" == "gnulinux" ]]
     then

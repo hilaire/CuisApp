@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #6058] on 26 October 2023 at 1:18:08 pm'!
+'From Cuis 6.0 [latest update: #6058] on 27 October 2023 at 5:39:10 pm'!
 'Description '!
-!provides: 'CuisApp' 1 23!
+!provides: 'CuisApp' 1 27!
 !requires: 'Goodies' 1 10 nil!
 !requires: 'UI-Components' nil nil nil!
 !requires: 'Gettext' nil nil nil!
@@ -224,7 +224,7 @@ previous
 new
 	^self on: Array new! !
 
-!AppView methodsFor: 'initialization' stamp: 'hlsf 10/25/2023 18:43:41'!
+!AppView methodsFor: 'initialization'!
 initialize
 	super initialize.
 	image := ImageMorph new.
@@ -236,148 +236,165 @@ initialize
 		send: #loadImage 
 		to: self! !
 
-!AppView methodsFor: 'accessing' stamp: 'hlsf 10/25/2023 14:46:09'!
+!AppView methodsFor: 'accessing'!
 domain
 	^ presenter domain! !
 
-!AppView methodsFor: 'accessing' stamp: 'hlsf 10/25/2023 14:50:07'!
+!AppView methodsFor: 'accessing'!
 imageMorph
 	^ image ! !
 
-!AppView methodsFor: 'accessing' stamp: 'hlsf 10/25/2023 14:41:24'!
+!AppView methodsFor: 'accessing'!
 presenter: aPresenter
 	presenter := aPresenter! !
 
-!AppView methodsFor: 'action' stamp: 'hlsf 10/25/2023 16:43:12'!
+!AppView methodsFor: 'action'!
 loadImage
 	image image: (ImageReadWriter formFromFileEntry: self domain fileEntry).
 	self update: #relabel! !
 
-!AppView class methodsFor: 'instance creation' stamp: 'hlsf 10/25/2023 15:39:56'!
+!AppView class methodsFor: 'instance creation'!
 for: aPresenter
 	^ self basicNew
 		presenter: aPresenter;
 		initialize ! !
 
-!App methodsFor: 'initialization' stamp: 'hlsf 10/26/2023 11:17:42'!
+!AppView class methodsFor: 'instance creation' stamp: 'hlsf 10/27/2023 17:15:41'!
+initializedInstance
+	| view |
+	view := App new.
+	view delete.
+	^ view! !
+
+!AppView class methodsFor: 'new-morph participation' stamp: 'hlsf 10/27/2023 16:34:12'!
+categoryInNewMorphMenu
+	^ 'User Interface'! !
+
+!AppView class methodsFor: 'new-morph participation' stamp: 'hlsf 10/27/2023 17:10:34'!
+includeInNewMorphMenu
+	^ true! !
+
+!App methodsFor: 'initialization' stamp: 'hlsf 10/27/2023 17:16:35'!
 initialize
 	domain := AppDomain new.
 	controlManager := AppControlManager for: self.
 	controlManager installAppView.
 	cmdManager := AppCommandManager new presenter: self.
-	self view openInWorld ! !
+	^ self view openInWorld.
+! !
 
-!App methodsFor: 'initialization' stamp: 'hlsf 10/25/2023 17:06:36'!
+!App methodsFor: 'initialization'!
 release
 	^ cmdManager release! !
 
-!App methodsFor: 'callback' stamp: 'hlsf 10/25/2023 18:58:31'!
+!App methodsFor: 'callback'!
 flipHorizontally
 	cmdManager flipHorizontally ! !
 
-!App methodsFor: 'callback' stamp: 'hlsf 10/25/2023 18:58:41'!
+!App methodsFor: 'callback'!
 flipVertically
 	cmdManager flipVertically ! !
 
-!App methodsFor: 'callback' stamp: 'hlsf 10/25/2023 19:20:00'!
+!App methodsFor: 'callback'!
 openImage
 	| answer |
 	answer := (StandardFileMenu new
 		oldFileFrom: AppSystem picturesPath withPattern: '*.png *.jpg *.jpeg' excludePattern: '.*') startUpWithCaption: 'Pick up a picture' translated.
-	answer ifNotNil: [	domain fileEntry: answer directory // answer name	].
-	cmdManager release ! !
+	answer ifNotNil: [
+		domain fileEntry: answer directory // answer name	.
+		cmdManager release]! !
 
-!App methodsFor: 'callback' stamp: 'hlsf 10/25/2023 18:41:11'!
+!App methodsFor: 'callback'!
 redo
 	cmdManager redo! !
 
-!App methodsFor: 'callback' stamp: 'hlsf 10/25/2023 17:07:33'!
+!App methodsFor: 'callback'!
 rotateLeft
 	cmdManager rotateLeft! !
 
-!App methodsFor: 'callback' stamp: 'hlsf 10/25/2023 17:07:55'!
+!App methodsFor: 'callback'!
 rotateRight
 	cmdManager rotateRight ! !
 
-!App methodsFor: 'callback' stamp: 'hlsf 10/25/2023 18:41:16'!
+!App methodsFor: 'callback'!
 undo
 	cmdManager undo! !
 
-!App methodsFor: 'callback' stamp: 'hlsf 10/25/2023 18:38:57'!
+!App methodsFor: 'callback'!
 zoomIn
 	cmdManager zoomIn! !
 
-!App methodsFor: 'callback' stamp: 'hlsf 10/25/2023 18:39:04'!
+!App methodsFor: 'callback'!
 zoomOut
 	cmdManager zoomOut ! !
 
-!App methodsFor: 'accessing' stamp: 'hlsf 10/25/2023 14:33:14'!
+!App methodsFor: 'accessing'!
 domain
 	^ domain! !
 
-!App methodsFor: 'accessing' stamp: 'hlsf 10/26/2023 11:17:42'!
+!App methodsFor: 'accessing'!
 view
 	^ controlManager view! !
 
-!App methodsFor: 'testing' stamp: 'hlsf 10/25/2023 15:58:39'!
+!App methodsFor: 'testing'!
 isButtonActive
 	^ domain fileEntry notNil! !
 
-!AppCommand methodsFor: 'accessing' stamp: 'hlsf 10/25/2023 17:00:40'!
+!AppCommand methodsFor: 'accessing'!
 imageMorph
 	^ presenter view imageMorph ! !
 
-!AppCommand methodsFor: 'accessing' stamp: 'hlsf 10/25/2023 16:59:07'!
+!AppCommand methodsFor: 'accessing'!
 presenter: aPresenter
 	presenter := aPresenter ! !
 
-!AppCommand methodsFor: 'command' stamp: 'hlsf 8/9/2023 14:47:27'!
+!AppCommand methodsFor: 'command'!
 execute
 	self subclassResponsibility ! !
 
-!AppCommand methodsFor: 'command' stamp: 'hlsf 8/9/2023 14:47:30'!
+!AppCommand methodsFor: 'command'!
 unexecute
 	self subclassResponsibility ! !
 
-!AppCommand methodsFor: 'initialize-release' stamp: 'hlsf 8/9/2023 14:48:16'!
+!AppCommand methodsFor: 'initialize-release'!
 release
 " Let my subclass instances do clean up if necessary "! !
 
-!AppCommand class methodsFor: 'instance creation' stamp: 'hlsf 10/25/2023 18:33:57'!
+!AppCommand class methodsFor: 'instance creation'!
 presenter: aPresenter
 	^ self new
 		presenter: aPresenter ;
 		yourself! !
 
-!AppFlipHCommand methodsFor: 'command' stamp: 'hlsf 10/25/2023 18:57:43'!
+!AppFlipHCommand methodsFor: 'command'!
 execute
 	self imageMorph image: (self imageMorph form flippedBy: #vertical)! !
 
-!AppFlipHCommand methodsFor: 'command' stamp: 'hlsf 10/25/2023 18:57:17'!
+!AppFlipHCommand methodsFor: 'command'!
 unexecute
 	self execute! !
 
-!AppFlipVCommand methodsFor: 'command' stamp: 'hlsf 10/25/2023 18:57:30'!
+!AppFlipVCommand methodsFor: 'command'!
 execute
 	self imageMorph image: (self imageMorph form flippedBy: #horizontal)! !
 
-!AppFlipVCommand methodsFor: 'command' stamp: 'hlsf 10/25/2023 18:57:30'!
+!AppFlipVCommand methodsFor: 'command'!
 unexecute
 	self execute! !
 
-!AppRotateCommand methodsFor: 'accessing' stamp: 'hlsf 10/25/2023 16:53:15'!
+!AppRotateCommand methodsFor: 'accessing'!
 degrees: angle
 	degrees := angle ! !
 
-!AppRotateCommand methodsFor: 'accessing' stamp: 'hlsf 10/25/2023 19:13:53'!
+!AppRotateCommand methodsFor: 'accessing'!
 execute
 	self imageMorph image: (self rotatedBy: degrees)! !
 
-!AppRotateCommand methodsFor: 'accessing' stamp: 'hlsf 10/25/2023 19:14:05'!
+!AppRotateCommand methodsFor: 'accessing'!
 unexecute
 	self imageMorph image: (self rotatedBy: degrees negated)! !
 
-!AppRotateCommand methodsFor: 'transformation' stamp: 'hlsf 10/25/2023 19:13:35'!
+!AppRotateCommand methodsFor: 'transformation'!
 rotatedBy:  angle
 	| originalForm rot warp r1 pts p center |
 	originalForm := self imageMorph form.
@@ -399,43 +416,43 @@ rotatedBy:  angle
 	warp copyQuad: pts toRect: rot boundingBox.
 	^ rot! !
 
-!AppZoomInCommand methodsFor: 'command' stamp: 'hlsf 10/25/2023 18:36:32'!
+!AppZoomInCommand methodsFor: 'command'!
 execute
 	self imageMorph image: (self imageMorph form magnifyBy: 2)! !
 
-!AppZoomInCommand methodsFor: 'command' stamp: 'hlsf 10/25/2023 18:36:37'!
+!AppZoomInCommand methodsFor: 'command'!
 unexecute
 	self imageMorph image: (self imageMorph form magnifyBy: 0.5)! !
 
-!AppZoomOutCommand methodsFor: 'command' stamp: 'hlsf 10/25/2023 18:38:01'!
+!AppZoomOutCommand methodsFor: 'command'!
 execute
 	cacheForm := self imageMorph form.
 	self imageMorph image: (cacheForm magnifyBy: 0.5)! !
 
-!AppZoomOutCommand methodsFor: 'command' stamp: 'hlsf 10/25/2023 18:38:11'!
+!AppZoomOutCommand methodsFor: 'command'!
 unexecute
 	self imageMorph image: cacheForm! !
 
-!AppZoomOutCommand methodsFor: 'as yet unclassified' stamp: 'hlsf 10/25/2023 18:38:26'!
+!AppZoomOutCommand methodsFor: 'as yet unclassified'!
 release
 	cacheForm := nil! !
 
-!AppCommandManager methodsFor: 'dependents access' stamp: 'hlsf 10/25/2023 19:21:56'!
+!AppCommandManager methodsFor: 'dependents access'!
 release
 	stack 	contents do: [:c | c release].
 	stack 	resetToStart ! !
 
-!AppCommandManager methodsFor: 'initialization' stamp: 'hlsf 10/25/2023 12:18:51'!
+!AppCommandManager methodsFor: 'initialization'!
 initialize
 	stack _ AppCommandStack new! !
 
-!AppCommandManager methodsFor: 'command exec' stamp: 'hlsf 10/25/2023 18:58:11'!
+!AppCommandManager methodsFor: 'command exec'!
 flipHorizontally
 	|command|
 	command := stack nextPut: (AppFlipHCommand presenter: presenter).
 	^command execute! !
 
-!AppCommandManager methodsFor: 'command exec' stamp: 'hlsf 10/25/2023 18:58:20'!
+!AppCommandManager methodsFor: 'command exec'!
 flipVertically
 	|command|
 	command := stack nextPut: (AppFlipVCommand presenter: presenter).
@@ -447,14 +464,14 @@ redo
 	command _ stack next.
 	command ifNotNil:	[command execute]! !
 
-!AppCommandManager methodsFor: 'command exec' stamp: 'hlsf 10/25/2023 19:03:04'!
+!AppCommandManager methodsFor: 'command exec'!
 rotateLeft
 	|command|
 	command := stack nextPut: (AppRotateCommand presenter: presenter).
 	command degrees: -90.
 	^command execute! !
 
-!AppCommandManager methodsFor: 'command exec' stamp: 'hlsf 10/25/2023 19:03:08'!
+!AppCommandManager methodsFor: 'command exec'!
 rotateRight
 	|command|
 	command := stack nextPut: (AppRotateCommand presenter: presenter).
@@ -467,32 +484,32 @@ undo
 	command _ stack previous.
 	command ifNotNil: [command unexecute]! !
 
-!AppCommandManager methodsFor: 'command exec' stamp: 'hlsf 10/25/2023 18:39:22'!
+!AppCommandManager methodsFor: 'command exec'!
 zoomIn
 	|command|
 	command := stack nextPut: (AppZoomInCommand presenter: presenter).
 	^command execute! !
 
-!AppCommandManager methodsFor: 'command exec' stamp: 'hlsf 10/25/2023 18:39:33'!
+!AppCommandManager methodsFor: 'command exec'!
 zoomOut
 	|command|
 	command := stack nextPut: (AppZoomOutCommand presenter: presenter).
 	^command execute! !
 
-!AppCommandManager methodsFor: 'accessing' stamp: 'hlsf 10/25/2023 14:53:57'!
+!AppCommandManager methodsFor: 'accessing'!
 presenter: aPresenter
 	presenter := aPresenter ! !
 
-!AppDomain methodsFor: 'accessing' stamp: 'hlsf 10/25/2023 15:26:27'!
+!AppDomain methodsFor: 'accessing'!
 fileEntry
 	^ fileEntry ! !
 
-!AppDomain methodsFor: 'accessing' stamp: 'hlsf 10/25/2023 16:31:19'!
+!AppDomain methodsFor: 'accessing'!
 fileEntry: aFileEntry
 	fileEntry := 	aFileEntry.
 	self triggerEvent: #newImageSelected! !
 
-!AppDomain methodsFor: 'accessing' stamp: 'hlsf 10/25/2023 15:36:12'!
+!AppDomain methodsFor: 'accessing'!
 labelString
 	^ String streamContents: [:str |
 		str nextPutAll: 'Image Viewer -- ' translated.
@@ -501,68 +518,68 @@ labelString
 				ifNotNil: [fileEntry baseName ] 
 				ifNil: [Date today asString] ) ]! !
 
-!AppControlManager methodsFor: 'accessing' stamp: 'hlsf 8/16/2023 21:15:48'!
+!AppControlManager methodsFor: 'accessing'!
 presenter: aPresenter
 	presenter := aPresenter ! !
 
-!AppControlManager methodsFor: 'accessing' stamp: 'hlsf 8/16/2023 21:17:57'!
+!AppControlManager methodsFor: 'accessing'!
 view
 	^ view! !
 
-!AppControlManager methodsFor: 'controls data' stamp: 'hlsf 10/25/2023 12:42:19'!
+!AppControlManager methodsFor: 'controls data'!
 flipHorizontallyButtonData
 " label - iconName - callback - description "
 	^ {'Flip H' translated . #mirrorH . #flipHorizontally . 'Flip the picture horizontally.' translated }! !
 
-!AppControlManager methodsFor: 'controls data' stamp: 'hlsf 10/25/2023 12:42:55'!
+!AppControlManager methodsFor: 'controls data'!
 flipVerticallyButtonData
 " label - iconName - callback - description "
 	^ {'Flip V' translated . #mirrorV . #flipVertically . 'Flip the picture vertically.' translated }! !
 
-!AppControlManager methodsFor: 'controls data' stamp: 'hlsf 10/25/2023 12:31:35'!
+!AppControlManager methodsFor: 'controls data'!
 openButtonData
 " label - iconName - callback - description "
 	^ {'Open' translated . #open . #openImage . 'Select a picture to visualize and to operate with.' translated }! !
 
-!AppControlManager methodsFor: 'controls data' stamp: 'hlsf 10/25/2023 12:32:51'!
+!AppControlManager methodsFor: 'controls data'!
 redoButtonData
 " label - iconName - callback - description "
 	^ {'Redo' translated . #redo . #redo . 'Redo the last undone operation.' translated }! !
 
-!AppControlManager methodsFor: 'controls data' stamp: 'hlsf 10/25/2023 12:35:49'!
+!AppControlManager methodsFor: 'controls data'!
 rotateLeftButtonData
 " label - iconName - callback - description "
 	^ {'Rotate Left' translated . #rotateLeft . #rotateLeft . 'Rotate the picture of 90 degrees to the left.' translated }! !
 
-!AppControlManager methodsFor: 'controls data' stamp: 'hlsf 10/25/2023 12:36:10'!
+!AppControlManager methodsFor: 'controls data'!
 rotateRightButtonData
 " label - iconName - callback - description "
 	^ {'Rotate Right' translated . #rotateRight . #rotateRight . 'Rotate the picture of 90 degrees to the right.' translated }! !
 
-!AppControlManager methodsFor: 'controls data' stamp: 'hlsf 10/25/2023 12:32:24'!
+!AppControlManager methodsFor: 'controls data'!
 undoButtonData
 " label - iconName - callback - description "
 	^ {'Undo' translated . #undo . #undo . 'Undo the last operation.' translated }! !
 
-!AppControlManager methodsFor: 'controls data' stamp: 'hlsf 10/25/2023 12:43:43'!
+!AppControlManager methodsFor: 'controls data'!
 zoomInButtonData
 " label - iconName - callback - description "
 	^ {'Zoom In' translated . #zoomIn . #zoomIn . 'Zoom in the picture.' translated }! !
 
-!AppControlManager methodsFor: 'controls data' stamp: 'hlsf 10/25/2023 12:44:04'!
+!AppControlManager methodsFor: 'controls data'!
 zoomOutButtonData
 " label - iconName - callback - description "
 	^ {'Zoom Out' translated . #zoomOut . #zoomOut . 'Zoom out the picture.' translated }! !
 
-!AppControlManager methodsFor: 'initialization' stamp: 'hlsf 10/25/2023 14:25:27'!
+!AppControlManager methodsFor: 'initialization'!
 initialize
 	icons := AppIconManager path: AppSystem iconsPath ! !
 
-!AppControlManager methodsFor: 'tools collection' stamp: 'hlsf 10/25/2023 14:15:37'!
+!AppControlManager methodsFor: 'tools collection'!
 appTools
 	^ #(open spacer undo redo spacer rotateLeft rotateRight flipVertically flipHorizontally zoomIn zoomOut)! !
 
-!AppControlManager methodsFor: 'view' stamp: 'hlsf 10/26/2023 11:19:17'!
+!AppControlManager methodsFor: 'view'!
 installAppView
 	| scroller |
 	view := AppView for: presenter.
@@ -575,7 +592,7 @@ installAppView
 	view addMorph: scroller
 	! !
 
-!AppControlManager methodsFor: 'widget' stamp: 'hlsf 10/26/2023 11:19:17'!
+!AppControlManager methodsFor: 'widget'!
 appToolbar
 	| toolbar |
 	toolbar := LayoutMorph newRow 
@@ -587,7 +604,7 @@ appToolbar
 			ifFalse: [	toolbar addMorph: (self button: aTool )] ].
 	^ toolbar! !
 
-!AppControlManager methodsFor: 'widget' stamp: 'hlsf 10/25/2023 15:58:27'!
+!AppControlManager methodsFor: 'widget'!
 button: symbol
 	"array first = menu label or button label
 	array second = button form = section mode
@@ -608,20 +625,20 @@ button: symbol
 		morphExtent: (AppSystem iconToolbarSize + 4) asPoint;
 		yourself	! !
 
-!AppControlManager class methodsFor: 'instance creation' stamp: 'hlsf 8/16/2023 21:15:18'!
+!AppControlManager class methodsFor: 'instance creation'!
 for: aPresenter
 	^ self new
 		presenter: aPresenter;
 		yourself! !
 
-!AppControlManager class methodsFor: 'widget' stamp: 'hlsf 10/7/2023 15:23:51'!
+!AppControlManager class methodsFor: 'widget'!
 spacer
 	^ BoxedMorph new 
 		borderWidth: 0;
 		color: Color transparent; 
 		yourself! !
 
-!AppIconManager methodsFor: 'accessing' stamp: 'hlsf 8/13/2023 16:00:18'!
+!AppIconManager methodsFor: 'accessing'!
 get: iconSymbolWithSize
 " icons get: #blank32 "
 	| size |
@@ -631,7 +648,7 @@ get: iconSymbolWithSize
 		get: (iconSymbolWithSize select: [:c | c isLetter ])
 		size: size asNumber! !
 
-!AppIconManager methodsFor: 'accessing' stamp: 'hlsf 8/13/2023 16:35:39'!
+!AppIconManager methodsFor: 'accessing'!
 get: icon size: integer
 " Search first for SVG icon, then PNG one "
 	^ forms 
@@ -652,71 +669,89 @@ get: icon size: integer
 					ifFalse: [self error: 'Missing icon file ', icon ] ]
 			]! !
 
-!AppIconManager methodsFor: 'accessing' stamp: 'hlsf 8/13/2023 15:20:42'!
+!AppIconManager methodsFor: 'accessing'!
 path: iconsDirectoryEntry
 	path := iconsDirectoryEntry ! !
 
-!AppIconManager methodsFor: 'initialization' stamp: 'hlsf 8/13/2023 16:29:00'!
+!AppIconManager methodsFor: 'initialization'!
 initialize
 	forms := Dictionary new.! !
 
-!AppIconManager class methodsFor: 'instance creation' stamp: 'hlsf 8/13/2023 15:37:01'!
+!AppIconManager class methodsFor: 'instance creation'!
 path: aDriectoryEntry
 	^ self new ::
 		path: aDriectoryEntry;
 		yourself! !
 
-!AppPlatform methodsFor: 'ui' stamp: 'hlsf 10/25/2023 14:20:32'!
+!AppPlatform methodsFor: 'ui'!
 iconToolbarSize
 	^ 64! !
 
-!AppPlatform methodsFor: 'path' stamp: 'hlsf 10/25/2023 14:21:47'!
+!AppPlatform methodsFor: 'path' stamp: 'hlsf 10/27/2023 17:38:08'!
 iconsPath
-	^ self rootPath / 'icons'! !
+	^ self rootPath / 'Resources' / 'icons'! !
 
-!AppPlatform methodsFor: 'path' stamp: 'hlsf 10/25/2023 16:09:28'!
+!AppPlatform methodsFor: 'path' stamp: 'hlsf 10/27/2023 17:38:32'!
 picturesPath
-	^ '/home/hilaire/Images' asDirectoryEntry ! !
+	^ self rootPath! !
 
-!AppPlatform methodsFor: 'path' stamp: 'hlsf 10/25/2023 14:22:42'!
+!AppPlatform methodsFor: 'path'!
 rootPath
 "CuisApp/ directory"
 	^ DirectoryEntry smalltalkImageDirectory parent parent! !
 
-!AppDevelopment methodsFor: 'path' stamp: 'hlsf 10/25/2023 15:41:29'!
+!AppDevelopment methodsFor: 'path'!
 iconsPath
 	^ self rootPath / 'resources' / 'graphics' / 'icons'! !
 
-!AppDevelopment methodsFor: 'path' stamp: 'hlsf 10/25/2023 14:22:33'!
+!AppDevelopment methodsFor: 'path'!
 rootPath
 "CuisApp/ directory"
 	^ DirectoryEntry smalltalkImageDirectory / 'CuisApp'! !
 
-!AppSystem class methodsFor: 'path' stamp: 'hlsf 10/25/2023 14:16:46'!
+!AppSystem class methodsFor: 'path'!
 iconsPath
 	^ platform iconsPath! !
 
-!AppSystem class methodsFor: 'path' stamp: 'hlsf 10/25/2023 16:09:43'!
+!AppSystem class methodsFor: 'path'!
 picturesPath
 	^ platform picturesPath ! !
 
-!AppSystem class methodsFor: 'ui' stamp: 'hlsf 10/25/2023 16:03:53'!
+!AppSystem class methodsFor: 'ui'!
 buttonColor
 	^ Color lightGray ! !
 
-!AppSystem class methodsFor: 'ui' stamp: 'hlsf 10/25/2023 16:04:11'!
+!AppSystem class methodsFor: 'ui'!
 buttonSelectedColor
 	^ Color gray muchLighter ! !
 
-!AppSystem class methodsFor: 'ui' stamp: 'hlsf 10/25/2023 14:18:24'!
+!AppSystem class methodsFor: 'ui'!
 iconToolbarSize
 " Size of the squared icons in the top toolbar"
 	^ platform iconToolbarSize ! !
 
-!AppSystem class methodsFor: 'class initialization' stamp: 'hlsf 10/25/2023 14:19:18'!
+!AppSystem class methodsFor: 'class initialization'!
 beApplication
 	platform := AppPlatform new! !
 
-!AppSystem class methodsFor: 'class initialization' stamp: 'hlsf 10/25/2023 14:19:29'!
+!AppSystem class methodsFor: 'class initialization'!
 beDevelopment
 	platform := AppDevelopment new! !
+
+!AppSystem class methodsFor: 'install' stamp: 'hlsf 10/27/2023 16:31:01'!
+install
+	'Finalizing installation...' print.
+	self runningWorld doOneCycleNow.
+	"Set Locale and text domains"
+	Preferences at: #useLocale put: true.
+	TextDomainManager registerCategoryPrefix: 'CuisApp' domain: 'cuisapp'.
+	self beApplication .
+	Smalltalk condenseChanges.
+	Smalltalk garbageCollect.
+	"Remove all morphs"
+	self runningWorld doOneCycleNow.
+	(UISupervisor ui submorphs reject: [:aMorph | aMorph is: #TaskbarMorph]) do: [:each | each delete].
+	'Morphs deleted' print.
+	Smalltalk garbageCollect.
+	'Image cleaned' print.
+	'Installation ended' print.! !
