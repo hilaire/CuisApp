@@ -634,12 +634,12 @@ AppZoomOutCommand>>unexecute
 
 
 \section{Localise}
-\begin{frame}[fragile]{ Modus operandi}
+\begin{frame}[fragile]{ Modus operandi 1/2}
 \fontsize{10pt}{8pt}\selectfont
   Your application in native language. It need the ``Gettext'' and
   ``System-Locales'' Cuis packages.
   \begin{itemize}
-  \item In the code, you write string in English. 
+  \item In the code, you write strings in English. 
   \item You send the message \texttt{\#translated} to each string you
     want to be translated:
     \begin{lstlisting}[language=Smalltalk]
@@ -650,22 +650,64 @@ AppZoomOutCommand>>unexecute
 TextDomainManager
    registerCategoryPrefix: 'CuisApp'
    domain: 'cuisapp'.
-    \end{lstlisting}
-  \item You export a .pot template file:
+ \end{lstlisting}
+ \tip\ Our domain is called ``cuisapp''. In the classes of the
+ category ``CuisApp'', it tracks the strings with the
+ \texttt{\#translated} message sent.
+ 
+\end{itemize}
+\end{frame}
+%
+\begin{frame}[fragile]{ Modus operandi 2/2}
+  \begin{itemize}
+  \item You export the messages to translate to a .pot template file:
     \begin{lstlisting}[language=Smalltalk]
 GetTextExporter exportTemplate
 \end{lstlisting}
-It creates a file Cuis-Smalltalk-Dev/po/cuisapp/cuisapp.pot
-\item You copy it as ``es.po'' and translate it to your native
-  language
+\tip\ It creates a file \texttt{Cuis-Smalltalk-Dev/po/cuisapp/cuisapp.pot}
+\item You copy this file to \texttt{CuisApp/i18n/locale/}
+\item To translate to Spanish, you copy this file as ``es.po'' and
+  translate it to your native language
+\item Add Spanish code ``es'' in the scripts \texttt{buildLocales.sh}
+  and \texttt{update-po.sh}
+  
+  \tip\ Execute \texttt{buildLocales.sh} each time you edited a .po
+  file
+
+  \tip\ Execute \texttt{update-po.sh} when the original exported file
+  \texttt{cuisapp.pot} was renewed because of additional messages to
+  translate or messages edited in the code.
   \end{itemize}
 \end{frame}
 
 \begin{lstlisting}[language=Smalltalk]
 \end{lstlisting}
 
-\section{Build a bundle}
+\section{Build the application}
+\begin{frame}[fragile]{makeBundle}
+  The bash script \texttt{makeBundle.sh}:
+  \begin{itemize}
+  \item Must be executed from \texttt{Cuis-Smalltalk-Dev} directory
+  \item Prepare the image:
+\begin{verbatim}
+./CuisApp/build/makeBundle.sh --build
+\end{verbatim}
+  \item Make a bundle for GNU/Linux and Windows:
+\begin{verbatim}
+./CuisApp/build/makeBundle.sh --package gnulinux
+./CuisApp/build/makeBundle.sh --package windows
+\end{verbatim}
+  \end{itemize}
+\end{frame}  
 
+\section*{End}
+\begin{frame}
+  \begin{center}
+    \fontsize{16pt}{8pt}\selectfont
+
+  Questions?
+\end{center}
+\end{frame}
 \section{References}
 \begin{frame}
   \fontsize{10pt}{8pt}\selectfont
