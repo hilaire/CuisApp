@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #6058] on 27 October 2023 at 5:39:10 pm'!
+'From Cuis 6.0 [latest update: #6058] on 27 October 2023 at 10:42:52 pm'!
 'Description '!
-!provides: 'CuisApp' 1 27!
+!provides: 'CuisApp' 1 29!
 !requires: 'Goodies' 1 10 nil!
 !requires: 'UI-Components' nil nil nil!
 !requires: 'Gettext' nil nil nil!
@@ -259,11 +259,10 @@ for: aPresenter
 		presenter: aPresenter;
 		initialize ! !
 
-!AppView class methodsFor: 'instance creation' stamp: 'hlsf 10/27/2023 17:15:41'!
+!AppView class methodsFor: 'instance creation' stamp: 'hlsf 10/27/2023 22:39:52'!
 initializedInstance
 	| view |
 	view := App new.
-	view delete.
 	^ view! !
 
 !AppView class methodsFor: 'new-morph participation' stamp: 'hlsf 10/27/2023 16:34:12'!
@@ -738,8 +737,9 @@ beApplication
 beDevelopment
 	platform := AppDevelopment new! !
 
-!AppSystem class methodsFor: 'install' stamp: 'hlsf 10/27/2023 16:31:01'!
+!AppSystem class methodsFor: 'install' stamp: 'hlsf 10/27/2023 18:03:04'!
 install
+	Preferences at: #logDebuggerStackToFile put: true.
 	'Finalizing installation...' print.
 	self runningWorld doOneCycleNow.
 	"Set Locale and text domains"
