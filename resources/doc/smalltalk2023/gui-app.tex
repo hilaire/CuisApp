@@ -91,14 +91,26 @@
 
 \subsection{The learning example}
 \begin{frame}{An image viewer}
-  An application with a toolbar to select an image and to operate
-  transformations with undo/redo commands.
+  Application with toolbar to view image and to operate
+  transformations with undo/redo commands (World Menu-New Morph, AppView).
 \begin{center}
   \includegraphics[width=0.6\textwidth]{CuisApp.png}
 \end{center}
 \end{frame}
-
-
+%
+\begin{frame}{How to follow the workshop?}
+  Don't take note or use your computer, only write down this url for later use.
+  \vspace*{2cm}
+  \fontsize{16pt}{8pt}\selectfont
+  \begin{center}
+   \url{https://github.com/hilaire/CuisApp}
+  \end{center}
+  \fontsize{11pt}{8pt}\selectfont
+  \vspace*{2cm}
+  \begin{flushright}
+   Enjoy the ride!
+ \end{flushright}
+\end{frame}
 
 \section{Organise your disk}
 \begin{frame}[fragile]{From scratch}
@@ -536,7 +548,7 @@ App>openImage
  Do you think there is a missing piece?
 \end{frame}
 
-\begin{frame}[fragile]{Decoupling Domain \& View}
+\begin{frame}[fragile]{Observer pattern}
   How the View knows about a newly selected image? We use the Observer
   pattern. The Domain triggers a \#newImageSelected event:
 
@@ -562,9 +574,23 @@ AppView>>loadImage
       formFromFileEntry: self domain fileEntry).
    self update: #relabel
   \end{lstlisting}
-
 \end{frame}
+%
+\begin{frame}{Caution with Observer pattern}
+  A costly mechanism to use with parsimony, for high level UI
+  controls.
 
+  \vspace*{10pt}
+
+  In Dr. Geo canvas, math model (circle below) and its view (morph)
+  are not coupled with the observer pattern. Canvas is updated with a
+  top-down redraw of the views, it is faster.
+
+  \begin{center}
+    \includegraphics[width=0.6\textwidth]{DrGeoViewModel.png}
+  \end{center}
+  
+\end{frame}
 \subsection{Command}
 \begin{frame}{General considerations}
   Three objects:
@@ -604,8 +630,9 @@ AppCommandManager>>rotateRight
 \end{frame}
 %
 \begin{frame}[fragile]{Rotate right command}
-  Observe the execute method. As the execute command is not, the
-  unexecute method just rotate the image in the other direction:
+  Observe the execute method. As the execute command is not
+  destructive, the unexecute method just rotate the image in the other
+  direction:
 
   \fontsize{10pt}{8pt}\selectfont
 
