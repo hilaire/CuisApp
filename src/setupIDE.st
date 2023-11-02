@@ -41,10 +41,11 @@ world := UISupervisor ui.
 		morph := BrowserWindow openBrowser 
 			morphPosition: area extent // 2;
 			morphExtent: extent.
-		morph model setClass: (Smalltalk at: #String) selector: nil.
+		morph model setClass: (Smalltalk at: #App) selector: nil.
 		"Open a Workspace with some default contents"
 		morph := Workspace openWorkspace.
-		morph model actualContents: 'ChangeSet installNewUpdates.'.
+		morph model actualContents: 'ChangeSet installNewUpdates.
+AppSystem beDevelopment'.
 		morph 
 			morphPosition: 0 @ (area height // 2);
 			morphExtent: extent x @ (2 / 3 * extent y).
