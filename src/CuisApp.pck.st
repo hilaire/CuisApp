@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #6058] on 27 October 2023 at 10:42:52 pm'!
+'From Cuis 6.0 [latest update: #6068] on 2 November 2023 at 3:56:32 pm'!
 'Description '!
-!provides: 'CuisApp' 1 29!
+!provides: 'CuisApp' 1 30!
 !requires: 'Goodies' 1 10 nil!
 !requires: 'UI-Components' nil nil nil!
 !requires: 'Gettext' nil nil nil!
@@ -737,21 +737,35 @@ beApplication
 beDevelopment
 	platform := AppDevelopment new! !
 
-!AppSystem class methodsFor: 'install' stamp: 'hlsf 10/27/2023 18:03:04'!
+!AppSystem class methodsFor: 'install' stamp: 'hlsf 11/2/2023 15:56:19'!
 install
+	| world |
+	Transcript
+ 		showOnDisplay: false;
+   		logToFile: true;
+		logToStdout: true.
+	Smalltalk at: #LogStartupDebugAids put: true.
 	Preferences at: #logDebuggerStackToFile put: true.
+	ChangeSet installNewUpdates.
 	'Finalizing installation...' print.
-	self runningWorld doOneCycleNow.
 	"Set Locale and text domains"
 	Preferences at: #useLocale put: true.
 	TextDomainManager registerCategoryPrefix: 'CuisApp' domain: 'cuisapp'.
 	self beApplication .
 	Smalltalk condenseChanges.
 	Smalltalk garbageCollect.
-	"Remove all morphs"
-	self runningWorld doOneCycleNow.
-	(UISupervisor ui submorphs reject: [:aMorph | aMorph is: #TaskbarMorph]) do: [:each | each delete].
-	'Morphs deleted' print.
-	Smalltalk garbageCollect.
-	'Image cleaned' print.
-	'Installation ended' print.! !
+	world := UISupervisor ui.
+[
+	(Delay forSeconds: 1) wait.
+	UISupervisor whenUIinSafeState: [	
+		"Remove all morphs"
+		(world submorphs reject: [:aMorph | aMorph is: #TaskbarMorph]) 
+			do: [:each | each delete].
+		'Morphs deleted' print.
+		Smalltalk garbageCollect.
+		'Image cleaned' print.
+		'Installation ended' print.
+		'Saving image...' print.
+		Smalltalk saveAndQuit]
+] fork
+! !
