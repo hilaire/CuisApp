@@ -45,7 +45,8 @@ world := UISupervisor ui.
 		"Open a Workspace with some default contents"
 		morph := Workspace openWorkspace.
 		morph model actualContents: 'ChangeSet installNewUpdates.
-AppSystem beDevelopment'.
+AppSystem beDevelopment.
+App new'.
 		morph 
 			morphPosition: 0 @ (area height // 2);
 			morphExtent: extent x @ (2 / 3 * extent y).
