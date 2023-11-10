@@ -44,32 +44,38 @@
   \tableofcontents[hideallsubsections]
 \end{frame}
 
-\section{About this workshop}
+\section{Why this workshop?}
 \subsection{The intents}
 \begin{frame}{Why writing a GUI application with \textbf{Smalltalk}?}
 
   \begin{itemize}
   \item Portable application
   \item Rapid prototyping
-  \item Explore concepts and new ideas
-  \item Learn from the environment itself
+  \item To explore concepts and new ideas
+  \item To learn from the environment itself
   \item Culture of design patterns
   \item Culture of testing
   \item Moldable environment
-  \item Bugs hunt are fun, and fixes too
+  \item Bugs hunt is fun, and fixes too
   \end{itemize}
 \end{frame}
 %
 \begin{frame}{Why writing a GUI application with \textbf{Cuis}-Smalltalk?}
 
   \begin{itemize}
-  \item Libre Smalltalk, the three fundamental freedoms\\
-    \tip\ deploy \& share as you want
+  \item A libre Smalltalk, it ensures \alert{the four fundamental freedoms}:
+    \begin{enumerate}
+    \item to run it,
+    \item to study and to modify it,
+    \item to distribute copy of it,
+    \item to distribute modified version of it.
+    \end{enumerate}
+     
   \item A Smalltalk system for humble human being\\
     \tip\ system complexity under control, not on your way
-  \item Cuis makes Morph correct \\
+  \item Cuis's \alert{Morph mark III} makes Morph correct \\
     \tip\ hierarchy, coordinates system, floating point precision
-  \item State of the art vector graphics engine \\
+  \item State of the art \alert{Vector Graphics} engine \\
     \tip\ make your app beautifully 
   \item Develop your own vector widget \\
     \tip\ with \textsc{SVG} icons
@@ -116,7 +122,11 @@
 \begin{frame}[fragile]{From scratch}
   The free operating system GNU/Linux is used along some Bash commands
   and scripts. You also need the \texttt{git} tool to access the Cuis
-  repositories.
+  repositories. Mac OS X should be fine.
+
+  On Windows, you need to adapt the Bash script to Microsfoft shell.
+
+\vspace{10pt}
   
   \tip\ In your disk, create a new folder ``\texttt{myProject}'' for
   your project:
@@ -184,18 +194,17 @@ git clone --depth 1 https://github.com/Cuis-Smalltalk/\
 \end{frame}
 %
 \begin{frame}[fragile]{CuisApp}
-  Cuis is repository agnostic. Use whatever suits you to track your
-  Cuis app.
+  Cuis is repository agnostic. Use whatever suits you to manage your
+  Cuis app code\footnote[frame]{ For \drgeo\ I use Bazaar/Launchpad
+    because it offers a web tool to edit translations in native
+    languages\cite{drgeoRepo}}.
 
-  For \drgeo\ I use Bazaar/Launchpad because it offers a web tool to
-  edit translations in native languages\cite{drgeoRepo}.
-
-  \tip\ For now, we just create an empty folder ``\texttt{CuisApp}''
-  in the Cuis-Smalltalk-Dev folder (and local copy of the repository):
+  \tip\ For your \alert{myApp}, you just clone its repository in the
+  Cuis-Smalltalk-Dev folder:
 
 \begin{verbatim}
 cd myProject/Cuis-Smalltalk-Dev
-mkdir CuisApp
+git clone http://github.com/hilaire/CuisApp
 \end{verbatim}
 
   \tip\ All the source codes and related resources needed for our Cuis
@@ -221,7 +230,7 @@ mkdir -p resources/graphics/icons resources/doc
 % App template, GUI, SVG, locale, gettext
 \subsection{Cuis packaging}
 \begin{frame}[fragile]
-  In a Cuis workspace, you request for a package as a Feature:
+  In a Cuis workspace, you request a package as a Feature:
   \begin{lstlisting}[language=Smalltalk]
     Feature require: 'UI-Components'
   \end{lstlisting}
@@ -274,9 +283,10 @@ package save
 
 \begin{frame}{Package content}
   In the class browser, we create a CuisApp class in the category \textbf{CuisApp}.\\
-  \tip\ All classes in the categories \textbf{CuisApp} and
-  \textbf{CuisApp-\#\#\#} are automatically part of the CuisApp
-  package.
+  \tip\ All classes in the categories \texttt{CuisApp} and
+  \texttt{CuisApp-\#\#\#} are automatically part of the CuisApp
+  package. All the methods in the system categorized as
+  \texttt{*CuisApp} are also part of the CuisApp package.
   \vspace*{10pt}
 
   Observe in the package manager the dependencies and the * indicating
