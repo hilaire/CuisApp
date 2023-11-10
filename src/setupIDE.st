@@ -46,7 +46,9 @@ world := UISupervisor ui.
 		morph := Workspace openWorkspace.
 		morph model actualContents: 'ChangeSet installNewUpdates.
 AppSystem beDevelopment.
-App new'.
+App new.
+TextDomainManager registerCategoryPrefix: ''CuisApp'' domain: ''cuisapp''.
+GetTextExporter exportTemplate'.
 		morph 
 			morphPosition: 0 @ (area height // 2);
 			morphExtent: extent x @ (2 / 3 * extent y).

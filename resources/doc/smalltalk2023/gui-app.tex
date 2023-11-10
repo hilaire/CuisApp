@@ -106,6 +106,9 @@
 %
 \begin{frame}{How to follow the workshop?}
   Don't take note or use your computer, only write down this url for later use.
+  \vspace{10pt}
+  
+  If you can clone:
   \vspace*{2cm}
   \fontsize{16pt}{8pt}\selectfont
   \begin{center}
@@ -378,7 +381,7 @@ cd Cuis-Smalltalk-Dev
 % What in there?
 \subsection{Design Patterns}
 \begin{frame}{Which ones?}
-  There are best practices, our CuisApp:
+  There are best practices. In our CuisApp:
   \begin{itemize}
   \item \textbf{MVP.} Model-View-Presenter for GUI application.
   \item \textbf{Strategy.} Present a set of methods with differents
@@ -464,7 +467,7 @@ App>>initialize
    self view openInWorld 
  \end{lstlisting}
  We use an auxiliary object \texttt{AppControlManager} to arrange the
- view: we keep low the complexity in our \texttt{AppView} and to
+ view: we keep low the complexity in our \texttt{AppView} and we can
  implement alternate arrangement by subclassing
  \texttt{AppControlManager}.
 \end{frame}
@@ -524,9 +527,7 @@ array third = symbol callback
 array fourth = help string"	
 | array |
    array := self perform: (symbol, #ButtonData) asSymbol.
-   ^ ButtonMorph 
-   model: presenter
-      action: array third ::
+   ^ ButtonMorph model: presenter action: array third ::
       enableSelector: (
          symbol == #open ifTrue: [true] ifFalse: [#isButtonActive]);
       icon: (icons get: array second size: AppSystem iconToolbarSize);
@@ -673,8 +674,9 @@ AppZoomOutCommand>>unexecute
 \section{Localise}
 \begin{frame}[fragile]{ Modus operandi 1/2}
 \fontsize{10pt}{8pt}\selectfont
-  Your application in native language. It need the ``Gettext'' and
-  ``System-Locales'' Cuis packages.
+Your application in native language.
+
+It needs the ``Gettext'' and ``System-Locales'' Cuis packages.
   \begin{itemize}
   \item In the code, you write strings in English. 
   \item You send the message \texttt{\#translated} to each string you
@@ -736,6 +738,15 @@ GetTextExporter exportTemplate
 \end{verbatim}
   \end{itemize}
 \end{frame}  
+
+\section{Tour}
+\begin{frame}
+  \begin{center}
+    Tour\\
+    Cuis-Smalltalk-UI repository \\
+    https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-UI
+  \end{center}
+\end{frame}
 
 \section*{End}
 \begin{frame}
