@@ -143,37 +143,21 @@
 
 \subsection{Repositories \& VM}
 % which basic repositories
-\begin{frame}[fragile]{Cuis image}
-  We need to clone the Cuis official repo to get the latest image and
-  updates along additional repositories of libraries we want to
-  use. We suggest you read latter the official guides to keep this
-  repository updated\cite{cuisRepo}.
+\begin{frame}[fragile]{Cuis image \& VM}
+  We clone the latest Cuis stable release along additional
+  repositories of libraries we want to use. We suggest you read latter
+  the official guides to keep this repository updated\cite{cuisRepo}.
 
 %\fontsize{10pt}{8pt}\selectfont
 \begin{verbatim}
 cd myProject
-git clone --depth 1 \
-   https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev.git
-cd Cuis-Smalltalk-Dev
-./clonePackageRepos.sh
+git clone https://github.com/Cuis-Smalltalk/Cuis6-2
+cd Cuis6-2
 \end{verbatim}
-\end{frame}
 %
-\begin{frame}[fragile]{Virtual Machine}
-  Get the latest virtual machine for GNU/Linux\cite{cuisRepo}:
-\begin{verbatim}
-cd myProject
-rm -r cogspur
-wget -O cogspur.tgz \
-   https://github.com/OpenSmalltalk/opensmalltalk-vm/\
-   releases/latest/download/squeak.cog.spur_linux64x64.tar.gz
-tar -zxvf cogspur.tgz
-mv ./sqcogspur64linuxht ./cogspur
-\end{verbatim}
-  
 \tip\ Test you can start Cuis:
 \begin{verbatim}
-../cogspur/squeak Cuis6.0-6xxx
+./RunCuisOnLinux.sh
 \end{verbatim}
 \end{frame}
 %
@@ -198,15 +182,15 @@ git clone --depth 1 https://github.com/Cuis-Smalltalk/\
 %
 \begin{frame}[fragile]{CuisApp}
   Cuis is repository agnostic. Use whatever suits you to manage your
-  Cuis app code\footnote[frame]{ For \drgeo\ I use Bazaar/Launchpad
-    because it offers a web tool to edit translations in native
-    languages\cite{drgeoRepo}}.
+  Cuis app code\footnote[frame]{ For some time \drgeo\ used
+    Bazaar/Launchpad because it offers a web tool to edit translations
+    in native languages\cite{drgeoRepo}}.
 
   \tip\ For your \alert{myApp}, you just clone its repository in the
-  Cuis-Smalltalk-Dev folder:
+  Cuis6-2 folder:
 
 \begin{verbatim}
-cd myProject/Cuis-Smalltalk-Dev
+cd myProject/Cuis6-2
 git clone http://github.com/hilaire/CuisApp
 \end{verbatim}
 
@@ -218,15 +202,25 @@ git clone http://github.com/hilaire/CuisApp
 \subsection{App space}
 % your dev App folder/repo
 %
-\begin{frame}[fragile]{Folders}
+\begin{frame}[fragile]{Folders \& Data}
 
   We need places for the source code, scripts, resources,
   i18n(Internationalization), build:
 \begin{verbatim}
-cd myProject/Cuis-Smalltalk-Dev/CuisApp
+cd myProject/Cuis6-2/CuisApp
 mkdir src i18n build
 mkdir -p resources/graphics/icons resources/doc
-\end{verbatim}  
+\end{verbatim}
+
+We also inform in the file ``cuisVersion'' about the Cuis release we
+are using. It must match the image release number found in
+Cuis6-2/CuisImage/:
+
+\begin{verbatim}
+cd myProject/Cuis6-2/CuisApp
+echo 6.2 > cuisVersion
+\end{verbatim}
+
 \end{frame}
 %
 \section{Packages}
@@ -281,7 +275,7 @@ package save
   \end{lstlisting}
 
   \tip\ The package is saved along the Cuis image, in
-  Cuis-Smalltalk-Dev.
+  Cuis6-2 .
 \end{frame}
 
 \begin{frame}{Package content}
@@ -338,18 +332,19 @@ However our working environment is still a mess. We will address that.
   \begin{verbatim}
 #!/bin/bash
 # Start CuisApp IDE
-#
 # Cuis Version release
-release=`ls Cuis6.0-????.image | cut -d - -f 2 | \
-   cut -d . -f 1`
-cuis=Cuis6.0-$release
+cuisVersion=`cat CuisApp/cuisVersion`
+imageFolder=CuisImage
+cuis=Cuis$cuisVersion
 ide=CuisAppIDE
+VM=CuisVM.app/Contents/Linux-x86_64/squeak
 # Clean up from previous session
+cd $imageFolder
 rm $ide.image $ide.changes $ide.user.* *.log
-# Create fresh image for next session
 cp $cuis.image $ide.image
 cp $cuis.changes $ide.changes
-../cogspur/squeak $ide -s CuisApp/src/setupIDE.st   
+cd -
+$VM $imageFolder/$ide -s CuisApp/src/setupIDE.st
  \end{verbatim}
 \end{frame}
 %
@@ -360,7 +355,7 @@ cp $cuis.changes $ide.changes
   \begin{itemize}
   \item Start your IDE:
 \begin{verbatim}
-cd Cuis-Smalltalk-Dev
+cd Cuis6-2
 ./CuisApp/startIDE.sh
 \end{verbatim}
   \item install latest Cuis update
@@ -703,7 +698,7 @@ TextDomainManager
     \begin{lstlisting}[language=Smalltalk]
 GetTextExporter exportTemplate
 \end{lstlisting}
-\tip\ It creates a file \texttt{Cuis-Smalltalk-Dev/po/cuisapp/cuisapp.pot}
+\tip\ It creates a file \texttt{Cuis6-2/po/cuisapp/cuisapp.pot}
 \item You copy this file to \texttt{CuisApp/i18n/locale/}
 \item To translate to Spanish, you copy this file as ``es.po'' and
   translate it to your native language
@@ -726,7 +721,7 @@ GetTextExporter exportTemplate
 \begin{frame}[fragile]{makeBundle}
   The bash script \texttt{makeBundle.sh}:
   \begin{itemize}
-  \item Must be executed from \texttt{Cuis-Smalltalk-Dev} directory
+  \item Must be executed from \texttt{Cuis6-2} directory
   \item Prepare the image:
 \begin{verbatim}
 ./CuisApp/build/makeBundle.sh --build
@@ -764,8 +759,8 @@ GetTextExporter exportTemplate
   \bibitem{cuisAppRepo}
     \href{https://github.com/hilaire/CuisApp}{CuisApp template}
 
-  \bibitem{drgeoRepo} \href{https://launchpad.net/drgeo}{\drgeo\
-      repository at launchpad with translation management}
+  \bibitem{drgeoRepo}
+    \href{https://github.com/hilaire/drgeo}{\drgeo\ repository}
 
   \bibitem{guiArch}
     \href{GUI Architectures}{https://www.martinfowler.com/eaaDev/uiArchs.html}
@@ -776,7 +771,7 @@ GetTextExporter exportTemplate
       Patterns Smalltalk Companion}, Addison-Wesley, 1998
     
   \bibitem{cuisRepo}
-    \href{https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev/blob/master/Documentation/GettingStarted.md}{Setting
+    \href{https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev/tree/master/Documentation}{Setting
       up and starting Cuis Smalltalk}
 
   \end{thebibliography}

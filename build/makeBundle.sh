@@ -2,8 +2,8 @@
 #
 # Build CuisApp image and package bundle
 #
-# Link the CuisAppo repository in the Cuis-Smalltalk-Dev folder.
-# Execute the script from Cuis-Smalltalk-Dev folder.
+# Link the CuisAppo repository in the Cuis release folder.
+# Execute the script from Cuis release folder.
 # If necessary, in the Path section below, adjust cuisAppRepo, vmExec variables.
 # Adjust below the rel variable to the wished CuisApp release number
 
@@ -11,26 +11,24 @@
 rel="23.12a-beta"
 
 # Smalltalk image version
-release=`ls Cuis6.0-????.image | cut -d - -f 2 | cut -d . -f 1`
-smalltalk="Cuis6.0-$release"
-smalltalkSources="CuisV6.sources"
+cuisVersion=`cat drgeo/cuisVersion`
+smalltalk=Cuis$cuisVersion
+smalltalkSources=Cuis$cuisVersion.sources
 
 # To build CuisApp we need:
 # A Cuis image, its source, the virtual machine,
 # the Smalltalk installation script and the CuisApp source
 
 # Path
-imagePath="."
+imagePath="./CuisImage"
 cuisAppRepo="./CuisApp"
 buildPath="$cuisAppRepo/build"
 bundlesPath="$buildPath/bundles"
 src="$cuisAppRepo/src"
 resources="$cuisAppRepo/resources"
  
-vmExec="../cogspur/squeak"
+vmExec=CuisVM.app/Contents/Linux-x86_64/squeak
 installScript="$src/install-image.st"
-
-
 
 buildImage () {
     # INSTALL PACKAGE
@@ -55,38 +53,52 @@ copyToBundle () {
 makeBundle () {
     # $1 OS target (gnulinux windows mac)
     # clean up the bundle space
+    mkdir $bundlesPath
     bundlePath="$bundlesPath/$1"
-    if [[ "$1" == "gnulinux" || "$1" == "windows" ]]
-    then
-	bundleApp="$bundlePath/CuisApp"
-    else
-	bundleApp="$bundlePath/CuisApp.app"
-    fi
-    bundleResources="$bundleApp/Resources"
-    bundleTemplate="$buildPath/vm/$1"
-    
-    rm -rf $bundlePath
-    # install template
-    rsync -a --exclude '.bzr' --exclude '*~' $bundleTemplate $bundlesPath
-    cp $resources/doc/ChangeLog $bundleApp
-    # install icons
-    rsync -a $resources/graphics/icons/* $bundleResources/icons
-    # install Smalltalk Image
-    rsync -a $imagePath/app.{image,changes} $bundleResources/image
-    # install Smalltalk Source
-    rsync -a $imagePath/$smalltalkSources $bundleResources/image
-    # install the locales
-    rsync -a "$cuisAppRepo/i18n/locale" $bundleResources/image
-    # set exec flag
-    if [[ "$1" == "gnulinux" ]]
-    then
-	chmod +x $bundleApp/CuisApp.sh
-	chmod +x $bundleApp/VM/squeak
-    elif [[ "$1" == "mac" ]]
-    then
-	chmod +x $bundleApp/Contents/MacOS/squeak
-    fi
+    bundleTemplate="$buildPath/bundleTemplates/$1"
 
+    case "$1" in
+	gnulinux)
+	    bundleApp="$bundlePath/CuisApp"
+	    cuisVM="CuisVM.app/Contents/Linux-x86_64"
+	;;
+	windows)
+	    bundleApp="$bundlePath/CuisApp.app"
+	    cuisVM="CuisVM.app/Contents/Windows-x86_64"
+	;;
+	mac)
+	    bundleApp="$bundlePath/CuisApp"
+	    cuisVM="CuisVM.app/Contents/MacOS" # subfolder Resources to be considered
+	;;
+    esac
+    bundleResources="$bundleApp/Resources"
+    # INSTALL BUNDLES...
+    rm -rf $bundlePath
+    # ...template
+    rsync -a --exclude '*~' $bundleTemplate $bundlesPath
+    # ...doc
+    cp $resources/doc/ChangeLog $bundleApp
+    # ...icons
+    rsync -a $resources/graphics/icons/* $bundleResources/icons
+    # ...vm
+    rsync -a $cuisVM/* $bundleApp/VM    
+    # ...Smalltalk Image
+    rsync -a $imagePath/app.{image,changes} $bundleResources/image
+    # ...Smalltalk Source
+    rsync -a $imagePath/$smalltalkSources $bundleResources/image
+    # ...locales
+    rsync -a "$cuisAppRepo/i18n/locale" $bundleResources/image   
+    # set exec flag
+    case "$1" in
+	gnulinux)
+	    chmod +x $bundleApp/CuisApp.sh
+	    chmod +x $bundleApp/VM/squeak
+	    ;;
+	mac)
+	    chmod +x $$bundleApp/Contents/MacOS/squeak
+	    ;;
+    esac    
+   
     # Create an archive out of the bundle
     cd $bundlePath
     zip -r --symlinks -qdgds 5m CuisApp-$1-$rel.zip "`basename $bundleApp`" -x \*/.bzr/* \*~
