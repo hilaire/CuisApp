@@ -4,14 +4,17 @@
 #
 
 # Cuis Version release
-release=`ls Cuis6.0-????.image | cut -d - -f 2 | cut -d . -f 1`
-
-cuis=Cuis6.0-$release
+cuisVersion=`cat CuisApp/cuisVersion`
+imageFolder=CuisImage
+cuis=Cuis$cuisVersion
 ide=CuisAppIDE
-# Clean up from previous session
-rm $ide.image $ide.changes $ide.user.* *.log
+VM=CuisVM.app/Contents/Linux-x86_64/squeak
 
+# Clean up from previous session
+cd $imageFolder
+rm $ide.image $ide.changes $ide.user.* *.log
 cp $cuis.image $ide.image
 cp $cuis.changes $ide.changes
+cd -
 
-../cogspur/squeak $ide -s CuisApp/src/setupIDE.st 
+$VM $imageFolder/$ide -s CuisApp/src/setupIDE.st

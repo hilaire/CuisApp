@@ -1,6 +1,6 @@
-'From Cuis 6.0 [latest update: #6068] on 2 November 2023 at 3:56:32 pm'!
+'From Cuis6.2 [latest update: #6156] on 3 February 2024 at 9:28:14 am'!
 'Description '!
-!provides: 'CuisApp' 1 30!
+!provides: 'CuisApp' 1 31!
 !requires: 'Goodies' 1 10 nil!
 !requires: 'UI-Components' nil nil nil!
 !requires: 'Gettext' nil nil nil!
@@ -703,10 +703,10 @@ rootPath
 iconsPath
 	^ self rootPath / 'resources' / 'graphics' / 'icons'! !
 
-!AppDevelopment methodsFor: 'path'!
+!AppDevelopment methodsFor: 'path' stamp: 'hlsf 2/3/2024 09:27:01'!
 rootPath
 "CuisApp/ directory"
-	^ DirectoryEntry smalltalkImageDirectory / 'CuisApp'! !
+	^ DirectoryEntry smalltalkImageDirectory parent / 'CuisApp'! !
 
 !AppSystem class methodsFor: 'path'!
 iconsPath
