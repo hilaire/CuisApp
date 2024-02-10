@@ -27,10 +27,10 @@ design of the Cuis application.
 
 ## Quick start-up
 
-Alternatively, you can build your developer environment and fetch the
-ready to use Cuis App template.
+Alternatively, you can directly fetch the needed repositories
+including the ready to use Cuis App template.
 
-1. Set up your Cuis-Smalltalk environment
+1. Set up your working environment
 
 ```bash
 mkdir myProject
@@ -66,3 +66,5 @@ application can be tested as well:
 ```bash
 /CuisApp/build/bundles/gnulinux/CuisApp/CuisApp.sh
 ```
+
+Happy hacking!
