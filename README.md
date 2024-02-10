@@ -18,6 +18,51 @@ template you will learn:
 
 
 You may want to [watch the related
-presentation](https://youtu.be/E3eDDSPCf7c?si=qUBf3i_fHnZCUX9t) at the
-Smalltalk 2013 Fast event in Buenos Aires.
+speech](https://youtu.be/E3eDDSPCf7c?si=qUBf3i_fHnZCUX9t) with its
+[companion
+slides](https://github.com/hilaire/CuisApp/blob/main/resources/doc/smalltalk2023/gui-app.pdf)
+presented at the Smalltalk 2023 Fast event in Buenos Aires. It
+explains how to build step-by-step your developer environment and the
+design of the Cuis application.
 
+## Quick start-up
+
+Alternatively, you can build your developer environment and fetch the
+ready to use Cuis App template.
+
+1. Set up your Cuis-Smalltalk environment
+
+```bash
+mkdir myProject
+cd myProject
+git clone https://github.com/Cuis-Smalltalk/Cuis6-2
+git clone --depth 1 https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-UI
+git clone --depth 1 https://github.com/Cuis-Smalltalk/SVG
+git clone --depth 1 https://github.com/Cuis-Smalltalk/Numerics
+cd Cuis6-2
+git clone http://github.com/hilaire/CuisApp
+```
+
+2. Start the CuisApp IDE
+```bash
+cd myProject/Cuis6-2
+./CuisApp/startIDE.sh
+```
+3. Build the application bundle
+
+```bash
+cd myProject/Cuis6-2
+# Build the application image
+./CuisApp/build/makeBundle.sh --build
+# Package a GNU/Linux bundle
+./CuisApp/build/makeBundle.sh --package gnulinux
+# Package a Windows bundle
+./CuisApp/build/makeBundle.sh --package windows
+```
+
+The bundles are located at CuisApp/build/bundles. The resulting
+application can be tested as well:
+
+```bash
+/CuisApp/build/bundles/gnulinux/CuisApp/CuisApp.sh
+```
