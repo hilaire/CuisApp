@@ -56,19 +56,23 @@ makeBundle () {
     mkdir $bundlesPath
     bundlePath="$bundlesPath/$1"
     bundleTemplate="$buildPath/bundleTemplates/$1"
-
+    cuisVMPath="CuisVM.app/Contents"
     case "$1" in
 	gnulinux)
 	    bundleApp="$bundlePath/CuisApp"
-	    cuisVM="CuisVM.app/Contents/Linux-x86_64"
+	    cuisVM="Linux-x86_64"
+	    destVM="VM"
 	;;
 	windows)
-	    bundleApp="$bundlePath/CuisApp.app"
-	    cuisVM="CuisVM.app/Contents/Windows-x86_64"
+	    bundleApp="$bundlePath/CuisApp"
+	    cuisVM="Windows-x86_64"
+	    destVM="VM"
 	;;
 	mac)
-	    bundleApp="$bundlePath/CuisApp"
-	    cuisVM="CuisVM.app/Contents/MacOS" # subfolder Resources to be considered
+	    bundleApp="$bundlePath/Cuis.app"
+	    cuisVM="MacOS Resources"
+	    # Subfolder Resources to be considered as well
+	    destVM="Contents"
 	;;
     esac
     bundleResources="$bundleApp/Resources"
@@ -81,7 +85,10 @@ makeBundle () {
     # ...icons
     rsync -a $resources/graphics/icons/* $bundleResources/icons
     # ...vm
-    rsync -a $cuisVM/* $bundleApp/VM    
+    for i in $cuisVM
+    do
+	rsync -a $cuisVMPath/$i $bundleApp/$destVM/
+    done    
     # ...Smalltalk Image
     rsync -a $imagePath/app.{image,changes} $bundleResources/image
     # ...Smalltalk Source
@@ -92,10 +99,10 @@ makeBundle () {
     case "$1" in
 	gnulinux)
 	    chmod +x $bundleApp/CuisApp.sh
-	    chmod +x $bundleApp/VM/squeak
+	    chmod +x $bundleApp/VM/$cuisVM/squeak
 	    ;;
 	mac)
-	    chmod +x $$bundleApp/Contents/MacOS/squeak
+	    chmod +x $bundleApp/Contents/MacOS/Squeak
 	    ;;
     esac    
    
