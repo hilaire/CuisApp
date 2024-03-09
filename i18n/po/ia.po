@@ -1,0 +1,93 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Cuis\n"
+"POT-Creation-Date: 2024-03-07 17:26-0000\n"
+"PO-Revision-Date: 2024-03-07 17:44+0200\n"
+"Last-Translator: Ken Dickey <Ken.Dickey@Whidbey.COM>\n"
+"Language-Team: Interlingua <http://www.interlingua.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Cuis-SystemVersion: Cuis 6.0 update 6058\n"
+"X-Cuis-Domain: cuisapp\n"
+
+#: CuisApp-Model,AppDomain>>labelString
+msgid "Image Viewer -- "
+msgstr "Imagine Visualisator"
+
+#: CuisApp-Presenter,App>>openImage
+msgid "Pick up a picture"
+msgstr "Seliger un imagine"
+
+#: CuisApp-View,AppControlManager>>flipHorizontallyButtonData
+msgid "Flip H"
+msgstr "Revert H"
+
+#: CuisApp-View,AppControlManager>>flipHorizontallyButtonData
+msgid "Flip the picture horizontally."
+msgstr "Revert le imagine horizontalente"
+
+#: CuisApp-View,AppControlManager>>flipVerticallyButtonData
+msgid "Flip V"
+msgstr "Revert V"
+
+#: CuisApp-View,AppControlManager>>flipVerticallyButtonData
+msgid "Flip the picture vertically."
+msgstr "Revert le imagine verticalente"
+
+#: CuisApp-View,AppControlManager>>openButtonData
+msgid "Open"
+msgstr "Aperte"
+
+#: CuisApp-View,AppControlManager>>openButtonData
+msgid "Select a picture to visualize and to operate with."
+msgstr "Seliger un imagine a videmente con operar se."
+
+#: CuisApp-View,AppControlManager>>redoButtonData
+msgid "Redo"
+msgstr "Refacer"
+
+#: CuisApp-View,AppControlManager>>redoButtonData
+msgid "Redo the last undone operation."
+msgstr "Refacer le ultime action disfacite"
+
+#: CuisApp-View,AppControlManager>>rotateLeftButtonData
+msgid "Rotate Left"
+msgstr "Rotar a sinistra"
+
+#: CuisApp-View,AppControlManager>>rotateLeftButtonData
+msgid "Rotate the picture of 90 degrees to the left."
+msgstr "Girar le imagine a 90 degrado a sinistra."
+
+#: CuisApp-View,AppControlManager>>rotateRightButtonData
+msgid "Rotate Right"
+msgstr "Rotar a dextra"
+
+#: CuisApp-View,AppControlManager>>rotateRightButtonData
+msgid "Rotate the picture of 90 degrees to the right."
+msgstr "Girar le imagine a 90 degrado a dextra."
+
+#: CuisApp-View,AppControlManager>>undoButtonData
+msgid "Undo"
+msgstr "Disfacer"
+
+#: CuisApp-View,AppControlManager>>undoButtonData
+msgid "Undo the last operation."
+msgstr "Disfacer le ultime operation."
+
+#: CuisApp-View,AppControlManager>>zoomInButtonData
+msgid "Zoom In"
+msgstr "Zoom avante"
+
+#: CuisApp-View,AppControlManager>>zoomInButtonData
+msgid "Zoom in the picture."
+msgstr "Aggrandir le imagine."
+
+#: CuisApp-View,AppControlManager>>zoomOutButtonData
+msgid "Zoom Out"
+msgstr "Zoom retro"
+
+#: CuisApp-View,AppControlManager>>zoomOutButtonData
+msgid "Zoom out the picture."
+msgstr "Diminuer le imagine."
+

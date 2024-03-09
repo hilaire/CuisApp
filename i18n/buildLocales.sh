@@ -6,7 +6,7 @@
 PODIR="po"
 MODIR="locale"
 
-LANG="fr"
+LANG="fr ia"
 
 # clean up
 rm -rf $MODIR

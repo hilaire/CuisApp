@@ -4,7 +4,7 @@
 
 cd po
 
-lang="fr"
+lang="fr ia"
 
 for l in $lang; do
     msgmerge -U $l.po cuisapp.pot
