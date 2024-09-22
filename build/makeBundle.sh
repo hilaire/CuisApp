@@ -8,16 +8,7 @@
 # Adjust below the rel variable to the wished CuisApp release number
 
 # CuisApp release number
-rel="23.12a-beta"
-
-# Smalltalk image version
-cuisVersion=`cat drgeo/cuisVersion`
-smalltalk=Cuis$cuisVersion
-smalltalkSources=Cuis$cuisVersion.sources
-
-# To build CuisApp we need:
-# A Cuis image, its source, the virtual machine,
-# the Smalltalk installation script and the CuisApp source
+rel="1.0-alpha"
 
 # Path
 imagePath="./CuisImage"
@@ -26,7 +17,24 @@ buildPath="$cuisAppRepo/build"
 bundlesPath="$buildPath/bundles"
 src="$cuisAppRepo/src"
 resources="$cuisAppRepo/resources"
- 
+
+# Smalltalk image version
+release=`cat $cuisAppRepo/cuisRelease`
+# version number, when dealing with rolling release
+version=`ls $imagePath/Cuis$release-????.image | cut -d - -f 2 | cut -d . -f 1`
+
+if [ -z "$version" ]
+then
+    smalltalk=Cuis$release
+else
+    smalltalk=Cuis$release-$version	
+fi
+smalltalkSources=Cuis$cuisVersion.sources
+
+# To build CuisApp we need:
+# A Cuis image, its source, the virtual machine,
+# the Smalltalk installation script and the CuisApp source
+
 vmExec=CuisVM.app/Contents/Linux-x86_64/squeak
 installScript="$src/install-image.st"
 

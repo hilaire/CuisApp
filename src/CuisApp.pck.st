@@ -1,6 +1,6 @@
-'From Cuis6.2 [latest update: #6156] on 3 February 2024 at 9:28:14 am'!
+'From Cuis7.1 [latest update: #6727] on 22 September 2024 at 7:59:46 pm'!
 'Description '!
-!provides: 'CuisApp' 1 31!
+!provides: 'CuisApp' 1 32!
 !requires: 'Goodies' 1 10 nil!
 !requires: 'UI-Components' nil nil nil!
 !requires: 'Gettext' nil nil nil!
@@ -22,14 +22,14 @@ ReadWriteStream subclass: #AppCommandStack
 AppCommandStack class
 	instanceVariableNames: ''!
 
-!classDefinition: #AppView category: #'CuisApp-View'!
-SystemWindow subclass: #AppView
-	instanceVariableNames: 'image presenter'
+!classDefinition: #AppDomain category: #'CuisApp-Model'!
+Object subclass: #AppDomain
+	instanceVariableNames: 'fileEntry'
 	classVariableNames: ''
 	poolDictionaries: ''
-	category: 'CuisApp-View'!
-!classDefinition: 'AppView class' category: #'CuisApp-View'!
-AppView class
+	category: 'CuisApp-Model'!
+!classDefinition: 'AppDomain class' category: #'CuisApp-Model'!
+AppDomain class
 	instanceVariableNames: ''!
 
 !classDefinition: #App category: #'CuisApp-Presenter'!
@@ -112,36 +112,6 @@ Object subclass: #AppCommandManager
 AppCommandManager class
 	instanceVariableNames: ''!
 
-!classDefinition: #AppDomain category: #'CuisApp-Model'!
-Object subclass: #AppDomain
-	instanceVariableNames: 'fileEntry'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'CuisApp-Model'!
-!classDefinition: 'AppDomain class' category: #'CuisApp-Model'!
-AppDomain class
-	instanceVariableNames: ''!
-
-!classDefinition: #AppControlManager category: #'CuisApp-View'!
-Object subclass: #AppControlManager
-	instanceVariableNames: 'presenter view icons'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'CuisApp-View'!
-!classDefinition: 'AppControlManager class' category: #'CuisApp-View'!
-AppControlManager class
-	instanceVariableNames: ''!
-
-!classDefinition: #AppIconManager category: #'CuisApp-View'!
-Object subclass: #AppIconManager
-	instanceVariableNames: 'forms path'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'CuisApp-View'!
-!classDefinition: 'AppIconManager class' category: #'CuisApp-View'!
-AppIconManager class
-	instanceVariableNames: ''!
-
 !classDefinition: #AppPlatform category: #'CuisApp-System'!
 Object subclass: #AppPlatform
 	instanceVariableNames: ''
@@ -172,9 +142,40 @@ Object subclass: #AppSystem
 AppSystem class
 	instanceVariableNames: 'platform'!
 
+!classDefinition: #AppControlManager category: #'CuisApp-View'!
+Object subclass: #AppControlManager
+	instanceVariableNames: 'presenter view icons'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CuisApp-View'!
+!classDefinition: 'AppControlManager class' category: #'CuisApp-View'!
+AppControlManager class
+	instanceVariableNames: ''!
 
-!AppView commentStamp: '<historical>' prior: 0!
-I am the main view of the application. I am modeled by the AppControlManager to keep out complexity.!
+!classDefinition: #AppIconManager category: #'CuisApp-View'!
+Object subclass: #AppIconManager
+	instanceVariableNames: 'forms path'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CuisApp-View'!
+!classDefinition: 'AppIconManager class' category: #'CuisApp-View'!
+AppIconManager class
+	instanceVariableNames: ''!
+
+!classDefinition: #AppView category: #'CuisApp-View'!
+SystemWindow subclass: #AppView
+	instanceVariableNames: 'image presenter'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'CuisApp-View'!
+!classDefinition: 'AppView class' category: #'CuisApp-View'!
+AppView class
+	instanceVariableNames: ''!
+
+
+!AppDomain commentStamp: '<historical>' prior: 0!
+The domain object of the CuisApp, a kind of Model.
+It knows about the image file entry.!
 
 !App commentStamp: '<historical>' prior: 0!
 I am the presenter of the CuisApp!
@@ -185,10 +186,6 @@ An abstract Command to undo/redo operation!
 !AppZoomOutCommand commentStamp: '<historical>' prior: 0!
 It is a destructive command. We have to keep a copy of the original form to restore it.!
 
-!AppDomain commentStamp: '<historical>' prior: 0!
-The domain object of the CuisApp, a kind of Model.
-It knows about the image file entry.!
-
 !AppControlManager commentStamp: '<historical>' prior: 0!
 A manager for the CuisApp user interface : windows,  toolbars, controls and other widgets.
 Among other things, I compose the AppView.
@@ -198,6 +195,9 @@ When needed, I can be subclassed to design an alternate arrangment of the AppVie
 I load icons from files (both PNG and SVG) and cached them in a dictionary (forms instance variable).
 I can manage different size of the same icon. 
 When asked for an icon with the message get: #blank32, I will search in the path for blank.svg, fallback to blank.png, then scale at squared size 32.!
+
+!AppView commentStamp: '<historical>' prior: 0!
+I am the main view of the application. I am modeled by the AppControlManager to keep out complexity.!
 
 !AppCommandStack methodsFor: 'private'!
 truncate
@@ -224,54 +224,23 @@ previous
 new
 	^self on: Array new! !
 
-!AppView methodsFor: 'initialization'!
-initialize
-	super initialize.
-	image := ImageMorph new.
-	image borderWidth: 1.
-	self model: self domain.
-	self update: #relabel.
-	self domain 
-		when: #newImageSelected
-		send: #loadImage 
-		to: self! !
+!AppDomain methodsFor: 'accessing'!
+fileEntry
+	^ fileEntry ! !
 
-!AppView methodsFor: 'accessing'!
-domain
-	^ presenter domain! !
+!AppDomain methodsFor: 'accessing'!
+fileEntry: aFileEntry
+	fileEntry := 	aFileEntry.
+	self triggerEvent: #newImageSelected! !
 
-!AppView methodsFor: 'accessing'!
-imageMorph
-	^ image ! !
-
-!AppView methodsFor: 'accessing'!
-presenter: aPresenter
-	presenter := aPresenter! !
-
-!AppView methodsFor: 'action'!
-loadImage
-	image image: (ImageReadWriter formFromFileEntry: self domain fileEntry).
-	self update: #relabel! !
-
-!AppView class methodsFor: 'instance creation'!
-for: aPresenter
-	^ self basicNew
-		presenter: aPresenter;
-		initialize ! !
-
-!AppView class methodsFor: 'instance creation' stamp: 'hlsf 10/27/2023 22:39:52'!
-initializedInstance
-	| view |
-	view := App new.
-	^ view! !
-
-!AppView class methodsFor: 'new-morph participation' stamp: 'hlsf 10/27/2023 16:34:12'!
-categoryInNewMorphMenu
-	^ 'User Interface'! !
-
-!AppView class methodsFor: 'new-morph participation' stamp: 'hlsf 10/27/2023 17:10:34'!
-includeInNewMorphMenu
-	^ true! !
+!AppDomain methodsFor: 'accessing'!
+labelString
+	^ String streamContents: [:str |
+		str nextPutAll: 'Image Viewer -- ' translated.
+		str nextPutAll:	(
+			fileEntry 
+				ifNotNil: [fileEntry baseName ] 
+				ifNil: [Date today asString] ) ]! !
 
 !App methodsFor: 'initialization' stamp: 'hlsf 10/27/2023 17:16:35'!
 initialize
@@ -499,23 +468,93 @@ zoomOut
 presenter: aPresenter
 	presenter := aPresenter ! !
 
-!AppDomain methodsFor: 'accessing'!
-fileEntry
-	^ fileEntry ! !
+!AppPlatform methodsFor: 'ui'!
+iconToolbarSize
+	^ 64! !
 
-!AppDomain methodsFor: 'accessing'!
-fileEntry: aFileEntry
-	fileEntry := 	aFileEntry.
-	self triggerEvent: #newImageSelected! !
+!AppPlatform methodsFor: 'path' stamp: 'hlsf 10/27/2023 17:38:08'!
+iconsPath
+	^ self rootPath / 'Resources' / 'icons'! !
 
-!AppDomain methodsFor: 'accessing'!
-labelString
-	^ String streamContents: [:str |
-		str nextPutAll: 'Image Viewer -- ' translated.
-		str nextPutAll:	(
-			fileEntry 
-				ifNotNil: [fileEntry baseName ] 
-				ifNil: [Date today asString] ) ]! !
+!AppPlatform methodsFor: 'path' stamp: 'hlsf 10/27/2023 17:38:32'!
+picturesPath
+	^ self rootPath! !
+
+!AppPlatform methodsFor: 'path'!
+rootPath
+"CuisApp/ directory"
+	^ DirectoryEntry smalltalkImageDirectory parent parent! !
+
+!AppDevelopment methodsFor: 'path'!
+iconsPath
+	^ self rootPath / 'resources' / 'graphics' / 'icons'! !
+
+!AppDevelopment methodsFor: 'path' stamp: 'hlsf 2/3/2024 09:27:01'!
+rootPath
+"CuisApp/ directory"
+	^ DirectoryEntry smalltalkImageDirectory parent / 'CuisApp'! !
+
+!AppSystem class methodsFor: 'path'!
+iconsPath
+	^ platform iconsPath! !
+
+!AppSystem class methodsFor: 'path'!
+picturesPath
+	^ platform picturesPath ! !
+
+!AppSystem class methodsFor: 'ui'!
+buttonColor
+	^ Color lightGray ! !
+
+!AppSystem class methodsFor: 'ui'!
+buttonSelectedColor
+	^ Color gray muchLighter ! !
+
+!AppSystem class methodsFor: 'ui'!
+iconToolbarSize
+" Size of the squared icons in the top toolbar"
+	^ platform iconToolbarSize ! !
+
+!AppSystem class methodsFor: 'class initialization'!
+beApplication
+	platform := AppPlatform new! !
+
+!AppSystem class methodsFor: 'class initialization'!
+beDevelopment
+	platform := AppDevelopment new! !
+
+!AppSystem class methodsFor: 'install' stamp: 'hlsf 11/2/2023 15:56:19'!
+install
+	| world |
+	Transcript
+ 		showOnDisplay: false;
+   		logToFile: true;
+		logToStdout: true.
+	Smalltalk at: #LogStartupDebugAids put: true.
+	Preferences at: #logDebuggerStackToFile put: true.
+	ChangeSet installNewUpdates.
+	'Finalizing installation...' print.
+	"Set Locale and text domains"
+	Preferences at: #useLocale put: true.
+	TextDomainManager registerCategoryPrefix: 'CuisApp' domain: 'cuisapp'.
+	self beApplication .
+	Smalltalk condenseChanges.
+	Smalltalk garbageCollect.
+	world := UISupervisor ui.
+[
+	(Delay forSeconds: 1) wait.
+	UISupervisor whenUIinSafeState: [	
+		"Remove all morphs"
+		(world submorphs reject: [:aMorph | aMorph is: #TaskbarMorph]) 
+			do: [:each | each delete].
+		'Morphs deleted' print.
+		Smalltalk garbageCollect.
+		'Image cleaned' print.
+		'Installation ended' print.
+		'Saving image...' print.
+		Smalltalk saveAndQuit]
+] fork
+! !
 
 !AppControlManager methodsFor: 'accessing'!
 presenter: aPresenter
@@ -630,10 +669,9 @@ for: aPresenter
 		presenter: aPresenter;
 		yourself! !
 
-!AppControlManager class methodsFor: 'widget'!
+!AppControlManager class methodsFor: 'widget' stamp: 'hlsf 9/22/2024 19:59:18'!
 spacer
-	^ BoxedMorph new 
-		borderWidth: 0;
+	^ ColoredBoxMorph new 
 		color: Color transparent; 
 		yourself! !
 
@@ -682,90 +720,51 @@ path: aDriectoryEntry
 		path: aDriectoryEntry;
 		yourself! !
 
-!AppPlatform methodsFor: 'ui'!
-iconToolbarSize
-	^ 64! !
+!AppView methodsFor: 'initialization'!
+initialize
+	super initialize.
+	image := ImageMorph new.
+	image borderWidth: 1.
+	self model: self domain.
+	self update: #relabel.
+	self domain 
+		when: #newImageSelected
+		send: #loadImage 
+		to: self! !
 
-!AppPlatform methodsFor: 'path' stamp: 'hlsf 10/27/2023 17:38:08'!
-iconsPath
-	^ self rootPath / 'Resources' / 'icons'! !
+!AppView methodsFor: 'accessing'!
+domain
+	^ presenter domain! !
 
-!AppPlatform methodsFor: 'path' stamp: 'hlsf 10/27/2023 17:38:32'!
-picturesPath
-	^ self rootPath! !
+!AppView methodsFor: 'accessing'!
+imageMorph
+	^ image ! !
 
-!AppPlatform methodsFor: 'path'!
-rootPath
-"CuisApp/ directory"
-	^ DirectoryEntry smalltalkImageDirectory parent parent! !
+!AppView methodsFor: 'accessing'!
+presenter: aPresenter
+	presenter := aPresenter! !
 
-!AppDevelopment methodsFor: 'path'!
-iconsPath
-	^ self rootPath / 'resources' / 'graphics' / 'icons'! !
+!AppView methodsFor: 'action'!
+loadImage
+	image image: (ImageReadWriter formFromFileEntry: self domain fileEntry).
+	self update: #relabel! !
 
-!AppDevelopment methodsFor: 'path' stamp: 'hlsf 2/3/2024 09:27:01'!
-rootPath
-"CuisApp/ directory"
-	^ DirectoryEntry smalltalkImageDirectory parent / 'CuisApp'! !
+!AppView class methodsFor: 'instance creation'!
+for: aPresenter
+	^ self basicNew
+		presenter: aPresenter;
+		initialize ! !
 
-!AppSystem class methodsFor: 'path'!
-iconsPath
-	^ platform iconsPath! !
+!AppView class methodsFor: 'instance creation' stamp: 'hlsf 10/27/2023 22:39:52'!
+initializedInstance
+	| view |
+	view := App new.
+	^ view! !
 
-!AppSystem class methodsFor: 'path'!
-picturesPath
-	^ platform picturesPath ! !
+!AppView class methodsFor: 'new-morph participation' stamp: 'hlsf 10/27/2023 16:34:12'!
+categoryInNewMorphMenu
+	^ 'User Interface'! !
 
-!AppSystem class methodsFor: 'ui'!
-buttonColor
-	^ Color lightGray ! !
-
-!AppSystem class methodsFor: 'ui'!
-buttonSelectedColor
-	^ Color gray muchLighter ! !
-
-!AppSystem class methodsFor: 'ui'!
-iconToolbarSize
-" Size of the squared icons in the top toolbar"
-	^ platform iconToolbarSize ! !
-
-!AppSystem class methodsFor: 'class initialization'!
-beApplication
-	platform := AppPlatform new! !
-
-!AppSystem class methodsFor: 'class initialization'!
-beDevelopment
-	platform := AppDevelopment new! !
-
-!AppSystem class methodsFor: 'install' stamp: 'hlsf 11/2/2023 15:56:19'!
-install
-	| world |
-	Transcript
- 		showOnDisplay: false;
-   		logToFile: true;
-		logToStdout: true.
-	Smalltalk at: #LogStartupDebugAids put: true.
-	Preferences at: #logDebuggerStackToFile put: true.
-	ChangeSet installNewUpdates.
-	'Finalizing installation...' print.
-	"Set Locale and text domains"
-	Preferences at: #useLocale put: true.
-	TextDomainManager registerCategoryPrefix: 'CuisApp' domain: 'cuisapp'.
-	self beApplication .
-	Smalltalk condenseChanges.
-	Smalltalk garbageCollect.
-	world := UISupervisor ui.
-[
-	(Delay forSeconds: 1) wait.
-	UISupervisor whenUIinSafeState: [	
-		"Remove all morphs"
-		(world submorphs reject: [:aMorph | aMorph is: #TaskbarMorph]) 
-			do: [:each | each delete].
-		'Morphs deleted' print.
-		Smalltalk garbageCollect.
-		'Image cleaned' print.
-		'Installation ended' print.
-		'Saving image...' print.
-		Smalltalk saveAndQuit]
-] fork
-! !
+!AppView class methodsFor: 'new-morph participation' stamp: 'hlsf 10/27/2023 17:10:34'!
+includeInNewMorphMenu
+	^ true! !

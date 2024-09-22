@@ -31,19 +31,19 @@ world := UISupervisor ui.
 		area := RealEstateAgent maximumUsableArea extendBy: 0 @ morph morphHeight negated.
 		extent := area extent // 2.
 		"Open a few System Browsers"
-		BrowserWindow openBrowser 
+		Browser open 
 			morphPosition: 0@0;
 			morphExtent: extent.
-		BrowserWindow openBrowser 
+		Browser open 
 			morphPosition: area width // 2 @ 0; 
 			morphExtent: extent.
 		"Open a System Browser on a specific class"
-		morph := BrowserWindow openBrowser 
+		morph := Browser open 
 			morphPosition: area extent // 2;
 			morphExtent: extent.
 		morph model setClass: (Smalltalk at: #App) selector: nil.
 		"Open a Workspace with some default contents"
-		morph := Workspace openWorkspace.
+		morph := Workspace open.
 		morph model actualContents: 'ChangeSet installNewUpdates.
 AppSystem beDevelopment.
 App new.
@@ -53,7 +53,7 @@ GetTextExporter exportTemplate'.
 			morphPosition: 0 @ (area height // 2);
 			morphExtent: extent x @ (2 / 3 * extent y).
 		"Open a transcript for logs"
-		TranscriptWindow openTranscript 
+		Transcript open 
 			morphPosition: 0 @ (area height // 2 + (2 / 3 * extent y));
 			morphExtent: extent x @ (1 / 3 * extent y ).
 		Smalltalk saveImage
