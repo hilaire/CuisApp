@@ -39,7 +39,7 @@ git clone https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev
 git clone --depth 1 https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-UI
 git clone --depth 1 https://github.com/Cuis-Smalltalk/SVG
 git clone --depth 1 https://github.com/Cuis-Smalltalk/Numerics
-cd Cuis6-2
+cd Cuis-Smalltalk-Dev
 git clone http://github.com/hilaire/CuisApp
 ```
 
