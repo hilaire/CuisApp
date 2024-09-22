@@ -35,7 +35,7 @@ including the ready to use Cuis App template.
 ```bash
 mkdir myProject
 cd myProject
-git clone https://github.com/Cuis-Smalltalk/Cuis6-2
+git clone https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-Dev
 git clone --depth 1 https://github.com/Cuis-Smalltalk/Cuis-Smalltalk-UI
 git clone --depth 1 https://github.com/Cuis-Smalltalk/SVG
 git clone --depth 1 https://github.com/Cuis-Smalltalk/Numerics
@@ -45,13 +45,13 @@ git clone http://github.com/hilaire/CuisApp
 
 2. Start the CuisApp IDE
 ```bash
-cd myProject/Cuis6-2
+cd myProject/Cuis-Smalltalk-Dev
 ./CuisApp/startIDE.sh
 ```
 3. Build the application bundle
 
 ```bash
-cd myProject/Cuis6-2
+cd myProject/Cuis-Smalltalk-Dev
 # Build the application image
 ./CuisApp/build/makeBundle.sh --build
 # Package a GNU/Linux bundle
